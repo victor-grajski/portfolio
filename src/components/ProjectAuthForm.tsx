@@ -28,10 +28,13 @@ export function ProjectAuthForm({ projectSlug }: ProjectAuthFormProps) {
       });
 
       if (result?.ok) {
-        // Replace the current URL (auth page) with home page in history
-        window.history.replaceState(null, '', '/');
-        // Then navigate to the project page
-        router.push(`/projects/${projectSlug}`);
+        // Add a small delay to ensure the session is properly set
+        setTimeout(() => {
+          // Navigate to the project page
+          router.push(`/projects/${projectSlug}`);
+          // Force a refresh to ensure the middleware picks up the new session
+          router.refresh();
+        }, 500);
       } else {
         setError('Incorrect password');
       }
@@ -81,6 +84,10 @@ export function ProjectAuthForm({ projectSlug }: ProjectAuthFormProps) {
       >
         {isLoading ? 'Verifying...' : 'View Project'}
       </button>
+      
+      <div className="text-sm text-gray-500 mt-4">
+        <p>For development: {process.env.NEXT_PUBLIC_DEV_SKIP_AUTH === 'true' ? 'Auth is currently bypassed' : 'Auth is enabled'}</p>
+      </div>
     </form>
   );
 } 

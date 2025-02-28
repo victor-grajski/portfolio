@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Navigation } from '@/components/Navigation';
 import { Providers } from '@/components/Providers';
+import { DevAuthToggle } from '@/components/DevAuthToggle';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -26,6 +27,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="pt-20">
             {children}
           </main>
+          {/* Development auth toggle */}
+          <DevAuthToggle />
         </Providers>
       </body>
     </html>
