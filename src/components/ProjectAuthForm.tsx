@@ -14,6 +14,7 @@ export function ProjectAuthForm({ projectSlug }: ProjectAuthFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const isDevelopment = process.env.NODE_ENV === 'development';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,9 +86,11 @@ export function ProjectAuthForm({ projectSlug }: ProjectAuthFormProps) {
         {isLoading ? 'Verifying...' : 'View Project'}
       </button>
       
-      <div className="text-sm text-gray-500 mt-4">
-        <p>For development: {process.env.NEXT_PUBLIC_DEV_SKIP_AUTH === 'true' ? 'Auth is currently bypassed' : 'Auth is enabled'}</p>
-      </div>
+      {isDevelopment && (
+        <div className="text-sm text-gray-500 mt-4">
+          <p>For development: {process.env.NEXT_PUBLIC_DEV_SKIP_AUTH === 'true' ? 'Auth is currently bypassed' : 'Auth is enabled'}</p>
+        </div>
+      )}
     </form>
   );
 } 
