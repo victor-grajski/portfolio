@@ -1,9 +1,9 @@
 import { getProjects } from '@/lib/contentful/api';
-import { Project } from '@/lib/contentful/generated/graphql';
 import { HeroText } from '@/components/HeroText';
 import ProjectCard from '@/components/ProjectCard';
 
 export default async function HomePage() {
+  // Get projects and ensure they all have slugs
   const projects = await getProjects();
 
   return (
@@ -18,7 +18,7 @@ export default async function HomePage() {
 
       {/* Projects Section */}
       <section className="space-y-8">
-        {projects.map((project: Project) => (
+        {projects.map((project) => (
           <ProjectCard key={project.sys.id} project={project} />
         ))}
       </section>

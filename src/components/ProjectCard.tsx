@@ -1,12 +1,12 @@
 'use client';
 
-import { Project } from '@/lib/contentful/generated/graphql';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { ProjectData } from '@/types/contentful';
 
 interface ProjectCardProps {
-  project: Project;
+  project: ProjectData;
 }
 
 const ProjectCard = ({ project }: ProjectCardProps) => {

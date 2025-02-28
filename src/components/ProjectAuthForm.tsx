@@ -35,7 +35,8 @@ export function ProjectAuthForm({ projectSlug }: ProjectAuthFormProps) {
       } else {
         setError('Incorrect password');
       }
-    } catch (err) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
       setError('An error occurred. Please try again.');
     } finally {
       setIsLoading(false);

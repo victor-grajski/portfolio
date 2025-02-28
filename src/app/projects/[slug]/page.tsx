@@ -1,10 +1,9 @@
 import { getProjectBySlug, getProjects } from '@/lib/contentful/api';
-import { Project } from '@/lib/contentful/generated/graphql';
 import Image from 'next/image';
 import Link from 'next/link';
 
 interface Props {
-  params: { slug: Promise<string> };
+  params: Promise<{ slug: string }>;
 }
 
 async function getProjectData(slug: string) {
@@ -17,7 +16,7 @@ async function getProjectData(slug: string) {
     return null;
   }
 
-  const currentIndex = allProjects.findIndex((p: Project) => p.slug === project.slug);
+  const currentIndex = allProjects.findIndex((p) => p.slug === project.slug);
   const prevProject = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
   const nextProject = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null;
 
@@ -26,13 +25,14 @@ async function getProjectData(slug: string) {
 
 export async function generateStaticParams() {
   const projects = await getProjects();
-  return projects.map((project: Project) => ({
+  return projects.map((project) => ({
     slug: project.slug,
   }));
 }
 
 export default async function ProjectPage({ params }: Props) {
-  const slug = await params.slug;
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
   const data = await getProjectData(slug);
 
   if (!data) {

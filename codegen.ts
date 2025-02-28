@@ -13,13 +13,13 @@ const config: CodegenConfig = {
   }],
   documents: ['src/**/*.graphql'],
   generates: {
-    'src/lib/contentful/generated/': {
-      preset: 'client',
+    'src/lib/contentful/generated/graphql.ts': {
       plugins: ['typescript', 'typescript-operations'],
       config: {
         skipTypename: false,
         enumsAsTypes: true,
         dedupeFragments: true,
+        avoidOptionals: true,
       },
     },
   },

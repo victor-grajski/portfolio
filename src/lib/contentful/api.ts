@@ -1,8 +1,56 @@
 import { graphqlClient, previewClient } from './client';
+import { ProjectData } from '@/types/contentful';
 
-export async function fetchGraphQL<T = any>(
+// Define types for the API responses
+interface ProjectCollectionResponse {
+  projectCollection: {
+    items: Array<{
+      sys: { id: string };
+      title?: string;
+      slug?: string;
+      subtitle?: string;
+      shortDescription?: string;
+      fullDescription?: {
+        json: {
+          content?: Array<{
+            content?: Array<{
+              value?: string;
+              [key: string]: unknown;
+            }>;
+            [key: string]: unknown;
+          }>;
+          [key: string]: unknown;
+        };
+        links?: {
+          assets?: {
+            block?: Array<{
+              sys: { id: string };
+              url?: string;
+              title?: string;
+              width?: number;
+              height?: number;
+            }>;
+          };
+        };
+      };
+      mainImage?: {
+        url?: string;
+        width?: number;
+        height?: number;
+      };
+      role?: string;
+      duration?: string;
+      year?: string;
+      tools?: string[];
+      isPasswordProtected?: boolean;
+      externalUrl?: string;
+    }>;
+  };
+}
+
+export async function fetchGraphQL<T = unknown>(
   query: string,
-  variables?: Record<string, any>,
+  variables?: Record<string, unknown>,
   preview = false
 ): Promise<T> {
   const client = preview ? previewClient : graphqlClient;
@@ -15,8 +63,8 @@ export async function fetchGraphQL<T = any>(
   }
 }
 
-export async function getProjects(preview = false) {
-  const data = await fetchGraphQL(
+export async function getProjects(preview = false): Promise<ProjectData[]> {
+  const data = await fetchGraphQL<ProjectCollectionResponse>(
     /* GraphQL */
     `query GetAllProjects {
       projectCollection {
@@ -39,11 +87,17 @@ export async function getProjects(preview = false) {
     preview
   );
 
-  return data.projectCollection.items;
+  // Filter out projects without a slug
+  return data.projectCollection.items
+    .filter(item => item.slug)
+    .map(item => ({
+      ...item,
+      slug: item.slug as string // Type assertion since we've filtered out undefined values
+    }));
 }
 
-export async function getProjectBySlug(slug: string, preview = false) {
-  const data = await fetchGraphQL(
+export async function getProjectBySlug(slug: string, preview = false): Promise<ProjectData | null> {
+  const data = await fetchGraphQL<ProjectCollectionResponse>(
     /* GraphQL */
     `query GetProjectBySlug($slug: String!) {
       projectCollection(where: { slug: $slug }, limit: 1) {
@@ -85,5 +139,14 @@ export async function getProjectBySlug(slug: string, preview = false) {
     preview
   );
 
-  return data.projectCollection.items[0];
+  const project = data.projectCollection.items[0];
+  
+  if (!project || !project.slug) {
+    return null;
+  }
+  
+  return {
+    ...project,
+    slug: project.slug
+  };
 } 

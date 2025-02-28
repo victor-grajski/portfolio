@@ -1,15 +1,16 @@
 import { getProjectBySlug } from '@/lib/contentful/api';
 import { ProjectAuthForm } from '@/components/ProjectAuthForm';
-import Image from 'next/image';
 
 interface ProjectAuthParams {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default async function ProjectAuthPage({ params }: ProjectAuthParams) {
-  const project = await getProjectBySlug(params.slug);
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
+  const project = await getProjectBySlug(slug);
 
   if (!project) {
     return <div>Project not found</div>;
@@ -39,7 +40,7 @@ export default async function ProjectAuthPage({ params }: ProjectAuthParams) {
       */}
 
       <div className="max-w-lg">
-        <ProjectAuthForm projectSlug={params.slug} />
+        <ProjectAuthForm projectSlug={slug} />
       </div>
     </div>
   );

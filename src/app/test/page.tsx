@@ -1,5 +1,4 @@
 import { getProjects } from '@/lib/contentful/api';
-import { Project } from '@/lib/contentful/generated/graphql';
 import Image from 'next/image';
 
 export default async function TestPage() {
@@ -10,7 +9,7 @@ export default async function TestPage() {
       <h1 className="text-3xl font-bold mb-8">Projects Test Page</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projects.map((project: Project) => (
+        {projects.map((project) => (
           <div 
             key={project.sys.id} 
             className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
