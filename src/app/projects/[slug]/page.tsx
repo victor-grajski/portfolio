@@ -1,6 +1,7 @@
 import { getProjectBySlug, getProjects } from '@/lib/contentful/api';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Metadata } from 'next';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -28,6 +29,30 @@ export async function generateStaticParams() {
   return projects.map((project) => ({
     slug: project.slug,
   }));
+}
+
+// Generate metadata for the project page
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
+  const project = await getProjectBySlug(slug);
+  
+  if (!project) {
+    return {
+      title: 'Project Not Found',
+    };
+  }
+  
+  // If the project is password protected, add noindex meta tag
+  const robots = project.isPasswordProtected 
+    ? { index: false, follow: false } 
+    : { index: true, follow: true };
+  
+  return {
+    title: `${project.title} | Victor Grajski`,
+    description: project.subtitle || `Project by Victor Grajski`,
+    robots,
+  };
 }
 
 export default async function ProjectPage({ params }: Props) {

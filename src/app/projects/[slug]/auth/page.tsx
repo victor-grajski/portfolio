@@ -1,10 +1,24 @@
 import { getProjectBySlug } from '@/lib/contentful/api';
 import { ProjectAuthForm } from '@/components/ProjectAuthForm';
+import { Metadata } from 'next';
 
 interface ProjectAuthParams {
   params: Promise<{
     slug: string;
   }>;
+}
+
+// Generate metadata for the auth page - always noindex
+export async function generateMetadata({ params }: ProjectAuthParams): Promise<Metadata> {
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
+  const project = await getProjectBySlug(slug);
+  
+  return {
+    title: project ? `${project.title} - Authentication | Victor Grajski` : 'Authentication | Victor Grajski',
+    description: 'Authentication required to view this project',
+    robots: { index: false, follow: false },
+  };
 }
 
 export default async function ProjectAuthPage({ params }: ProjectAuthParams) {
