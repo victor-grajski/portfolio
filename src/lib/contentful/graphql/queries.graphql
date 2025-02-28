@@ -1,0 +1,40 @@
+query GetAllProjects {
+  projectCollection {
+    items {
+      ...ProjectFields
+    }
+  }
+}
+
+query GetProjectBySlug($slug: String!) {
+  projectCollection(where: { slug: $slug }, limit: 1) {
+    items {
+      ...ProjectFields
+      fullDescription {
+        json
+        links {
+          assets {
+            block {
+              sys {
+                id
+              }
+              url
+              title
+              width
+              height
+              description
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+query GetProjectSlugs {
+  projectCollection {
+    items {
+      slug
+    }
+  }
+} 

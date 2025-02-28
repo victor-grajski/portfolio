@@ -1,0 +1,29 @@
+fragment AssetFields on Asset {
+  sys {
+    id
+  }
+  title
+  description
+  url
+  width
+  height
+}
+
+fragment ProjectFields on Project {
+  sys {
+    id
+  }
+  title
+  slug
+  subtitle
+  shortDescription
+  mainImage {
+    ...AssetFields
+  }
+  role
+  duration
+  year
+  tools
+  isPasswordProtected
+  externalUrl
+} 
