@@ -51,17 +51,17 @@ export function Navigation() {
           aria-label="Toggle menu"
         >
           <div className="w-6 h-5 relative flex flex-col justify-between">
-            <span 
+            <span
               className={`w-full h-0.5 bg-black transition-transform duration-300 ${
                 isOpen ? 'rotate-45 translate-y-2' : ''
               }`}
             />
-            <span 
+            <span
               className={`w-full h-0.5 bg-black transition-opacity duration-300 ${
                 isOpen ? 'opacity-0' : ''
               }`}
             />
-            <span 
+            <span
               className={`w-full h-0.5 bg-black transition-transform duration-300 ${
                 isOpen ? '-rotate-45 -translate-y-2' : ''
               }`}
@@ -82,7 +82,7 @@ export function Navigation() {
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
             />
-            
+
             {/* Menu */}
             <motion.div
               className="fixed left-0 right-0 top-[72px] bg-[#f8f8f8] lg:hidden"
@@ -92,15 +92,15 @@ export function Navigation() {
               transition={{ duration: 0.3, ease: 'easeInOut' }}
             >
               <div className="max-w-4xl mx-auto px-6 py-4 flex flex-col space-y-4">
-                <Link 
-                  href="/" 
+                <Link
+                  href="/"
                   className="text-lg hover:text-gray-600"
                   onClick={() => setIsOpen(false)}
                 >
                   Work
                 </Link>
-                <Link 
-                  href="/about" 
+                <Link
+                  href="/about"
                   className="text-lg hover:text-gray-600"
                   onClick={() => setIsOpen(false)}
                 >
@@ -140,4 +140,4 @@ export function Navigation() {
       </AnimatePresence>
     </>
   );
-} 
+}

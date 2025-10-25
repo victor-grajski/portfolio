@@ -40,4 +40,4 @@ export type ProjectData = {
   tools?: string[];
   isPasswordProtected?: boolean;
   externalUrl?: string;
-}; 
+};

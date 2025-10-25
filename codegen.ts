@@ -4,13 +4,15 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 const config: CodegenConfig = {
-  schema: [{
-    [`https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}`]: {
-      headers: {
-        Authorization: `Bearer ${process.env.CONTENTFUL_ACCESS_TOKEN}`,
+  schema: [
+    {
+      [`https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}`]: {
+        headers: {
+          Authorization: `Bearer ${process.env.CONTENTFUL_ACCESS_TOKEN}`,
+        },
       },
     },
-  }],
+  ],
   documents: ['src/**/*.graphql'],
   generates: {
     'src/lib/contentful/generated/graphql.ts': {
@@ -25,4 +27,4 @@ const config: CodegenConfig = {
   },
 };
 
-export default config; 
+export default config;

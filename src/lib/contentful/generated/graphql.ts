@@ -4,20 +4,24 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = {
+  [_ in K]?: never;
+};
+export type Incremental<T> =
+  | T
+  | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
-  DateTime: { input: any; output: any; }
-  Dimension: { input: any; output: any; }
-  HexColor: { input: any; output: any; }
-  JSON: { input: any; output: any; }
-  Quality: { input: any; output: any; }
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
+  DateTime: { input: any; output: any };
+  Dimension: { input: any; output: any };
+  HexColor: { input: any; output: any };
+  JSON: { input: any; output: any };
+  Quality: { input: any; output: any };
 };
 
 /** Represents a binary file in a space. An asset can be any file type. */
@@ -36,55 +40,46 @@ export type Asset = {
   width: Maybe<Scalars['Int']['output']>;
 };
 
-
 /** Represents a binary file in a space. An asset can be any file type. */
 export type AssetContentTypeArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
 };
-
 
 /** Represents a binary file in a space. An asset can be any file type. */
 export type AssetDescriptionArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
 };
 
-
 /** Represents a binary file in a space. An asset can be any file type. */
 export type AssetFileNameArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
 };
-
 
 /** Represents a binary file in a space. An asset can be any file type. */
 export type AssetHeightArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
 };
 
-
 /** Represents a binary file in a space. An asset can be any file type. */
 export type AssetLinkedFromArgs = {
   allowedLocales: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
-
 
 /** Represents a binary file in a space. An asset can be any file type. */
 export type AssetSizeArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
 };
 
-
 /** Represents a binary file in a space. An asset can be any file type. */
 export type AssetTitleArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
 };
-
 
 /** Represents a binary file in a space. An asset can be any file type. */
 export type AssetUrlArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
   transform: InputMaybe<ImageTransformOptions>;
 };
-
 
 /** Represents a binary file in a space. An asset can be any file type. */
 export type AssetWidthArgs = {
@@ -174,14 +169,12 @@ export type AssetLinkingCollections = {
   projectCollection: Maybe<ProjectCollection>;
 };
 
-
 export type AssetLinkingCollectionsEntryCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale: InputMaybe<Scalars['String']['input']>;
   preview: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
 };
-
 
 export type AssetLinkingCollectionsProjectCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -377,56 +370,51 @@ export type ImageTransformOptions = {
 };
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
-export type Project = Entry & _Node & {
-  __typename?: 'Project';
-  _id: Scalars['ID']['output'];
-  contentfulMetadata: ContentfulMetadata;
-  duration: Maybe<Scalars['String']['output']>;
-  externalUrl: Maybe<Scalars['String']['output']>;
-  fullDescription: Maybe<ProjectFullDescription>;
-  isPasswordProtected: Maybe<Scalars['Boolean']['output']>;
-  linkedFrom: Maybe<ProjectLinkingCollections>;
-  mainImage: Maybe<Asset>;
-  role: Maybe<Scalars['String']['output']>;
-  shortDescription: Maybe<Scalars['String']['output']>;
-  slug: Maybe<Scalars['String']['output']>;
-  subtitle: Maybe<Scalars['String']['output']>;
-  sys: Sys;
-  title: Maybe<Scalars['String']['output']>;
-  tools: Maybe<Array<Maybe<Scalars['String']['output']>>>;
-  year: Maybe<Scalars['String']['output']>;
-};
-
+export type Project = Entry &
+  _Node & {
+    __typename?: 'Project';
+    _id: Scalars['ID']['output'];
+    contentfulMetadata: ContentfulMetadata;
+    duration: Maybe<Scalars['String']['output']>;
+    externalUrl: Maybe<Scalars['String']['output']>;
+    fullDescription: Maybe<ProjectFullDescription>;
+    isPasswordProtected: Maybe<Scalars['Boolean']['output']>;
+    linkedFrom: Maybe<ProjectLinkingCollections>;
+    mainImage: Maybe<Asset>;
+    role: Maybe<Scalars['String']['output']>;
+    shortDescription: Maybe<Scalars['String']['output']>;
+    slug: Maybe<Scalars['String']['output']>;
+    subtitle: Maybe<Scalars['String']['output']>;
+    sys: Sys;
+    title: Maybe<Scalars['String']['output']>;
+    tools: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+    year: Maybe<Scalars['String']['output']>;
+  };
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectDurationArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
 };
 
-
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectExternalUrlArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
 };
-
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectFullDescriptionArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
 };
 
-
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectIsPasswordProtectedArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
 };
 
-
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectLinkedFromArgs = {
   allowedLocales: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
-
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectMainImageArgs = {
@@ -434,42 +422,35 @@ export type ProjectMainImageArgs = {
   preview: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectRoleArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
 };
-
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectShortDescriptionArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
 };
 
-
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectSlugArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
 };
-
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectSubtitleArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
 };
 
-
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectTitleArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
 };
 
-
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectToolsArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
 };
-
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectYearArgs = {
@@ -611,7 +592,6 @@ export type ProjectLinkingCollections = {
   entryCollection: Maybe<EntryCollection>;
 };
 
-
 export type ProjectLinkingCollectionsEntryCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale: InputMaybe<Scalars['String']['input']>;
@@ -655,20 +635,17 @@ export type Query = {
   projectCollection: Maybe<ProjectCollection>;
 };
 
-
 export type Query_NodeArgs = {
   id: Scalars['ID']['input'];
   locale: InputMaybe<Scalars['String']['input']>;
   preview: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-
 export type QueryAssetArgs = {
   id: Scalars['String']['input'];
   locale: InputMaybe<Scalars['String']['input']>;
   preview: InputMaybe<Scalars['Boolean']['input']>;
 };
-
 
 export type QueryAssetCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -679,7 +656,6 @@ export type QueryAssetCollectionArgs = {
   where: InputMaybe<AssetFilter>;
 };
 
-
 export type QueryEntryCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale: InputMaybe<Scalars['String']['input']>;
@@ -689,13 +665,11 @@ export type QueryEntryCollectionArgs = {
   where: InputMaybe<EntryFilter>;
 };
 
-
 export type QueryProjectArgs = {
   id: Scalars['String']['input'];
   locale: InputMaybe<Scalars['String']['input']>;
   preview: InputMaybe<Scalars['Boolean']['input']>;
 };
-
 
 export type QueryProjectCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -778,23 +752,131 @@ export type _Node = {
   _id: Scalars['ID']['output'];
 };
 
-export type AssetFieldsFragment = { __typename?: 'Asset', title: string | null, description: string | null, url: string | null, width: number | null, height: number | null, sys: { __typename?: 'Sys', id: string } };
+export type AssetFieldsFragment = {
+  __typename?: 'Asset';
+  title: string | null;
+  description: string | null;
+  url: string | null;
+  width: number | null;
+  height: number | null;
+  sys: { __typename?: 'Sys'; id: string };
+};
 
-export type ProjectFieldsFragment = { __typename?: 'Project', title: string | null, slug: string | null, subtitle: string | null, shortDescription: string | null, role: string | null, duration: string | null, year: string | null, tools: Array<string | null> | null, isPasswordProtected: boolean | null, externalUrl: string | null, sys: { __typename?: 'Sys', id: string }, mainImage: { __typename?: 'Asset', title: string | null, description: string | null, url: string | null, width: number | null, height: number | null, sys: { __typename?: 'Sys', id: string } } | null };
+export type ProjectFieldsFragment = {
+  __typename?: 'Project';
+  title: string | null;
+  slug: string | null;
+  subtitle: string | null;
+  shortDescription: string | null;
+  role: string | null;
+  duration: string | null;
+  year: string | null;
+  tools: Array<string | null> | null;
+  isPasswordProtected: boolean | null;
+  externalUrl: string | null;
+  sys: { __typename?: 'Sys'; id: string };
+  mainImage: {
+    __typename?: 'Asset';
+    title: string | null;
+    description: string | null;
+    url: string | null;
+    width: number | null;
+    height: number | null;
+    sys: { __typename?: 'Sys'; id: string };
+  } | null;
+};
 
-export type GetAllProjectsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAllProjectsQueryVariables = Exact<{ [key: string]: never }>;
 
-
-export type GetAllProjectsQuery = { __typename?: 'Query', projectCollection: { __typename?: 'ProjectCollection', items: Array<{ __typename?: 'Project', title: string | null, slug: string | null, subtitle: string | null, shortDescription: string | null, role: string | null, duration: string | null, year: string | null, tools: Array<string | null> | null, isPasswordProtected: boolean | null, externalUrl: string | null, sys: { __typename?: 'Sys', id: string }, mainImage: { __typename?: 'Asset', title: string | null, description: string | null, url: string | null, width: number | null, height: number | null, sys: { __typename?: 'Sys', id: string } } | null } | null> } | null };
+export type GetAllProjectsQuery = {
+  __typename?: 'Query';
+  projectCollection: {
+    __typename?: 'ProjectCollection';
+    items: Array<{
+      __typename?: 'Project';
+      title: string | null;
+      slug: string | null;
+      subtitle: string | null;
+      shortDescription: string | null;
+      role: string | null;
+      duration: string | null;
+      year: string | null;
+      tools: Array<string | null> | null;
+      isPasswordProtected: boolean | null;
+      externalUrl: string | null;
+      sys: { __typename?: 'Sys'; id: string };
+      mainImage: {
+        __typename?: 'Asset';
+        title: string | null;
+        description: string | null;
+        url: string | null;
+        width: number | null;
+        height: number | null;
+        sys: { __typename?: 'Sys'; id: string };
+      } | null;
+    } | null>;
+  } | null;
+};
 
 export type GetProjectBySlugQueryVariables = Exact<{
   slug: Scalars['String']['input'];
 }>;
 
+export type GetProjectBySlugQuery = {
+  __typename?: 'Query';
+  projectCollection: {
+    __typename?: 'ProjectCollection';
+    items: Array<{
+      __typename?: 'Project';
+      title: string | null;
+      slug: string | null;
+      subtitle: string | null;
+      shortDescription: string | null;
+      role: string | null;
+      duration: string | null;
+      year: string | null;
+      tools: Array<string | null> | null;
+      isPasswordProtected: boolean | null;
+      externalUrl: string | null;
+      fullDescription: {
+        __typename?: 'ProjectFullDescription';
+        json: any;
+        links: {
+          __typename?: 'ProjectFullDescriptionLinks';
+          assets: {
+            __typename?: 'ProjectFullDescriptionAssets';
+            block: Array<{
+              __typename?: 'Asset';
+              url: string | null;
+              title: string | null;
+              width: number | null;
+              height: number | null;
+              description: string | null;
+              sys: { __typename?: 'Sys'; id: string };
+            } | null>;
+          };
+        };
+      } | null;
+      sys: { __typename?: 'Sys'; id: string };
+      mainImage: {
+        __typename?: 'Asset';
+        title: string | null;
+        description: string | null;
+        url: string | null;
+        width: number | null;
+        height: number | null;
+        sys: { __typename?: 'Sys'; id: string };
+      } | null;
+    } | null>;
+  } | null;
+};
 
-export type GetProjectBySlugQuery = { __typename?: 'Query', projectCollection: { __typename?: 'ProjectCollection', items: Array<{ __typename?: 'Project', title: string | null, slug: string | null, subtitle: string | null, shortDescription: string | null, role: string | null, duration: string | null, year: string | null, tools: Array<string | null> | null, isPasswordProtected: boolean | null, externalUrl: string | null, fullDescription: { __typename?: 'ProjectFullDescription', json: any, links: { __typename?: 'ProjectFullDescriptionLinks', assets: { __typename?: 'ProjectFullDescriptionAssets', block: Array<{ __typename?: 'Asset', url: string | null, title: string | null, width: number | null, height: number | null, description: string | null, sys: { __typename?: 'Sys', id: string } } | null> } } } | null, sys: { __typename?: 'Sys', id: string }, mainImage: { __typename?: 'Asset', title: string | null, description: string | null, url: string | null, width: number | null, height: number | null, sys: { __typename?: 'Sys', id: string } } | null } | null> } | null };
+export type GetProjectSlugsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetProjectSlugsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetProjectSlugsQuery = { __typename?: 'Query', projectCollection: { __typename?: 'ProjectCollection', items: Array<{ __typename?: 'Project', slug: string | null } | null> } | null };
+export type GetProjectSlugsQuery = {
+  __typename?: 'Query';
+  projectCollection: {
+    __typename?: 'ProjectCollection';
+    items: Array<{ __typename?: 'Project'; slug: string | null } | null>;
+  } | null;
+};

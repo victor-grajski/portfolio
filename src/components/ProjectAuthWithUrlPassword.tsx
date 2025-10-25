@@ -1,20 +1,60 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-interface ProjectAuthFormProps {
+interface ProjectAuthWithUrlPasswordProps {
   projectSlug: string;
 }
 
-export function ProjectAuthForm({ projectSlug }: ProjectAuthFormProps) {
+export function ProjectAuthWithUrlPassword({ projectSlug }: ProjectAuthWithUrlPasswordProps) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [autoAuthAttempted, setAutoAuthAttempted] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const isDevelopment = process.env.NODE_ENV === 'development';
+
+  // Check for password in URL and auto-authenticate
+  useEffect(() => {
+    const urlPassword = searchParams.get('pwd');
+
+    if (urlPassword && !autoAuthAttempted) {
+      setAutoAuthAttempted(true);
+      setIsLoading(true);
+
+      // Attempt to sign in with the URL password
+      signIn('credentials', {
+        password: urlPassword,
+        projectSlug,
+        redirect: false,
+      })
+        .then((result) => {
+          if (result?.ok) {
+            // Authentication successful - redirect to project page
+            setTimeout(() => {
+              router.push(`/projects/${projectSlug}`);
+              router.refresh();
+            }, 500);
+          } else {
+            // Auto-auth failed - show error and let user try manually
+            setError(
+              'The password in the link is incorrect. Please enter the correct password below.'
+            );
+            setIsLoading(false);
+          }
+        })
+        .catch(() => {
+          setError(
+            'An error occurred during authentication. Please try entering the password below.'
+          );
+          setIsLoading(false);
+        });
+    }
+  }, [searchParams, projectSlug, router, autoAuthAttempted]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,6 +86,18 @@ export function ProjectAuthForm({ projectSlug }: ProjectAuthFormProps) {
       setIsLoading(false);
     }
   };
+
+  // Show loading state during auto-authentication
+  if (isLoading && !error && searchParams.get('pwd')) {
+    return (
+      <div className="space-y-4">
+        <div className="text-center py-8">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black mb-4"></div>
+          <p className="text-lg">Authenticating...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">

@@ -54,7 +54,7 @@ export async function fetchGraphQL<T = unknown>(
   preview = false
 ): Promise<T> {
   const client = preview ? previewClient : graphqlClient;
-  
+
   try {
     return await client.request<T>(query, variables);
   } catch (error) {
@@ -66,87 +66,97 @@ export async function fetchGraphQL<T = unknown>(
 export async function getProjects(preview = false): Promise<ProjectData[]> {
   const data = await fetchGraphQL<ProjectCollectionResponse>(
     /* GraphQL */
-    `query GetAllProjects {
-      projectCollection {
-        items {
-          sys { id }
-          title
-          slug
-          subtitle
-          shortDescription
-          mainImage {
-            url
-            width
-            height
+    `
+      query GetAllProjects {
+        projectCollection {
+          items {
+            sys {
+              id
+            }
+            title
+            slug
+            subtitle
+            shortDescription
+            mainImage {
+              url
+              width
+              height
+            }
+            isPasswordProtected
           }
-          isPasswordProtected
         }
       }
-    }`,
+    `,
     undefined,
     preview
   );
 
   // Filter out projects without a slug
   return data.projectCollection.items
-    .filter(item => item.slug)
-    .map(item => ({
+    .filter((item) => item.slug)
+    .map((item) => ({
       ...item,
-      slug: item.slug as string // Type assertion since we've filtered out undefined values
+      slug: item.slug as string, // Type assertion since we've filtered out undefined values
     }));
 }
 
 export async function getProjectBySlug(slug: string, preview = false): Promise<ProjectData | null> {
   const data = await fetchGraphQL<ProjectCollectionResponse>(
     /* GraphQL */
-    `query GetProjectBySlug($slug: String!) {
-      projectCollection(where: { slug: $slug }, limit: 1) {
-        items {
-          sys { id }
-          title
-          slug
-          subtitle
-          shortDescription
-          fullDescription {
-            json
-            links {
-              assets {
-                block {
-                  sys { id }
-                  url
-                  title
-                  width
-                  height
+    `
+      query GetProjectBySlug($slug: String!) {
+        projectCollection(where: { slug: $slug }, limit: 1) {
+          items {
+            sys {
+              id
+            }
+            title
+            slug
+            subtitle
+            shortDescription
+            fullDescription {
+              json
+              links {
+                assets {
+                  block {
+                    sys {
+                      id
+                    }
+                    url
+                    title
+                    width
+                    height
+                  }
                 }
               }
             }
+            mainImage {
+              url
+              width
+              height
+            }
+            role
+            duration
+            year
+            tools
+            isPasswordProtected
+            externalUrl
           }
-          mainImage {
-            url
-            width
-            height
-          }
-          role
-          duration
-          year
-          tools
-          isPasswordProtected
-          externalUrl
         }
       }
-    }`,
+    `,
     { slug },
     preview
   );
 
   const project = data.projectCollection.items[0];
-  
+
   if (!project || !project.slug) {
     return null;
   }
-  
+
   return {
     ...project,
-    slug: project.slug
+    slug: project.slug,
   };
-} 
+}

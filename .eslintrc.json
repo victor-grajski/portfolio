@@ -6,4 +6,4 @@
     "react/no-unescaped-entities": "warn"
   },
   "ignorePatterns": ["src/lib/contentful/generated/**/*"]
-} 
+}

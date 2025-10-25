@@ -7,11 +7,11 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+// Allow dynamic generation of pages not included in generateStaticParams
+export const dynamicParams = true;
+
 async function getProjectData(slug: string) {
-  const [project, allProjects] = await Promise.all([
-    getProjectBySlug(slug),
-    getProjects(),
-  ]);
+  const [project, allProjects] = await Promise.all([getProjectBySlug(slug), getProjects()]);
 
   if (!project) {
     return null;
@@ -25,10 +25,17 @@ async function getProjectData(slug: string) {
 }
 
 export async function generateStaticParams() {
-  const projects = await getProjects();
-  return projects.map((project) => ({
-    slug: project.slug,
-  }));
+  try {
+    const projects = await getProjects();
+    return projects.map((project) => ({
+      slug: project.slug,
+    }));
+  } catch (error) {
+    console.error('Failed to fetch projects for static generation:', error);
+    // Return empty array to allow build to continue
+    // Pages will be generated on-demand at runtime
+    return [];
+  }
 }
 
 // Generate metadata for the project page
@@ -36,18 +43,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
   const project = await getProjectBySlug(slug);
-  
+
   if (!project) {
     return {
       title: 'Project Not Found',
     };
   }
-  
+
   // If the project is password protected, add noindex meta tag
-  const robots = project.isPasswordProtected 
-    ? { index: false, follow: false } 
+  const robots = project.isPasswordProtected
+    ? { index: false, follow: false }
     : { index: true, follow: true };
-  
+
   return {
     title: `${project.title} | Victor Grajski`,
     description: project.subtitle || `Project by Victor Grajski`,
@@ -71,9 +78,7 @@ export default async function ProjectPage({ params }: Props) {
       {/* Title Section */}
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl font-bold mb-3">{project.title}</h1>
-        {project.subtitle && (
-          <p className="text-xl md:text-2xl opacity-80">{project.subtitle}</p>
-        )}
+        {project.subtitle && <p className="text-xl md:text-2xl opacity-80">{project.subtitle}</p>}
       </div>
 
       {/* Main Image */}
@@ -129,7 +134,7 @@ export default async function ProjectPage({ params }: Props) {
               </p>
             </div>
           )}
-          
+
           {project.externalUrl && (
             <a
               href={project.externalUrl}
@@ -146,25 +151,29 @@ export default async function ProjectPage({ params }: Props) {
       {/* Previous/Next Navigation */}
       <div className="mt-16 pt-8 border-t flex justify-between">
         {prevProject ? (
-          <Link 
+          <Link
             href={`/projects/${prevProject.slug}`}
             className="flex items-center text-lg hover:opacity-70 transition-opacity"
           >
             <span className="mr-2">←</span>
             <span>{prevProject.title}</span>
           </Link>
-        ) : <div />}
-        
+        ) : (
+          <div />
+        )}
+
         {nextProject ? (
-          <Link 
+          <Link
             href={`/projects/${nextProject.slug}`}
             className="flex items-center text-lg hover:opacity-70 transition-opacity"
           >
             <span>{nextProject.title}</span>
             <span className="ml-2">→</span>
           </Link>
-        ) : <div />}
+        ) : (
+          <div />
+        )}
       </div>
     </div>
   );
-} 
+}

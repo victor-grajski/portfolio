@@ -26,4 +26,4 @@ fragment ProjectFields on Project {
   tools
   isPasswordProtected
   externalUrl
-} 
+}
