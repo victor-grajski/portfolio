@@ -7,7 +7,7 @@ const DEV_AUTH_COOKIE = 'dev-skip-auth';
 // Function to check if we should skip auth
 function shouldSkipAuth(req: NextRequest) {
   // Check environment variable
-  if (process.env.DEV_SKIP_AUTH === 'true') {
+  if (process.env.NEXT_PUBLIC_DEV_SKIP_AUTH === 'true') {
     return true;
   }
 

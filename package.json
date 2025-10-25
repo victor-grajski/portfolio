@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npm run open-browser && next dev",
+    "dev": "next dev & sleep 2 && npm run open-browser",
     "open-browser": "open http://localhost:3000",
     "build": "next build",
     "build:check": "NEXT_DIST_DIR=.next-build-check next build --no-lint",
@@ -15,7 +15,7 @@
     "codegen:watch": "graphql-codegen --watch",
     "clean": "rm -rf .next .next-build-check node_modules/.cache",
     "clean:dev": "npm run clean && npm run dev",
-    "clean:build": "npm run clean && npm run build"
+    "clean:build": "npm run clean && npm run build:check"
   },
   "dependencies": {
     "@fontsource/mulish": "^5.1.1",

@@ -7,6 +7,6 @@ declare namespace NodeJS {
     CONTENTFUL_ACCESS_TOKEN: string;
     CONTENTFUL_PREVIEW_ACCESS_TOKEN: string;
     PROJECT_PASSWORD: string;
-    DEV_SKIP_AUTH?: string;
+    NEXT_PUBLIC_DEV_SKIP_AUTH?: string;
   }
 }
