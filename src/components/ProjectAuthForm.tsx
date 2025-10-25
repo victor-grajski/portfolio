@@ -39,7 +39,7 @@ export function ProjectAuthForm({ projectSlug }: ProjectAuthFormProps) {
       } else {
         setError('Incorrect password');
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setError('An error occurred. Please try again.');
     } finally {
@@ -73,11 +73,9 @@ export function ProjectAuthForm({ projectSlug }: ProjectAuthFormProps) {
           </button>
         </div>
       </div>
-      
-      {error && (
-        <p className="text-red-500 text-sm">{error}</p>
-      )}
-      
+
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+
       <button
         type="submit"
         disabled={isLoading}
@@ -85,12 +83,17 @@ export function ProjectAuthForm({ projectSlug }: ProjectAuthFormProps) {
       >
         {isLoading ? 'Verifying...' : 'View Project'}
       </button>
-      
+
       {isDevelopment && (
         <div className="text-sm text-gray-500 mt-4">
-          <p>For development: {process.env.NEXT_PUBLIC_DEV_SKIP_AUTH === 'true' ? 'Auth is currently bypassed' : 'Auth is enabled'}</p>
+          <p>
+            For development:{' '}
+            {process.env.NEXT_PUBLIC_DEV_SKIP_AUTH === 'true'
+              ? 'Auth is currently bypassed'
+              : 'Auth is enabled'}
+          </p>
         </div>
       )}
     </form>
   );
-} 
+}

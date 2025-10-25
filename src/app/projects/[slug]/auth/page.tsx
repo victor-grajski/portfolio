@@ -13,9 +13,11 @@ export async function generateMetadata({ params }: ProjectAuthParams): Promise<M
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
   const project = await getProjectBySlug(slug);
-  
+
   return {
-    title: project ? `${project.title} - Authentication | Victor Grajski` : 'Authentication | Victor Grajski',
+    title: project
+      ? `${project.title} - Authentication | Victor Grajski`
+      : 'Authentication | Victor Grajski',
     description: 'Authentication required to view this project',
     robots: { index: false, follow: false },
   };
@@ -34,9 +36,7 @@ export default async function ProjectAuthPage({ params }: ProjectAuthParams) {
     <div className="max-w-4xl mx-auto px-6 py-12">
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl font-bold mb-3">{project.title}</h1>
-        {project.subtitle && (
-          <p className="text-xl md:text-2xl opacity-80">{project.subtitle}</p>
-        )}
+        {project.subtitle && <p className="text-xl md:text-2xl opacity-80">{project.subtitle}</p>}
       </div>
 
       {/* Commented out blurred image section
@@ -58,4 +58,4 @@ export default async function ProjectAuthPage({ params }: ProjectAuthParams) {
       </div>
     </div>
   );
-} 
+}

@@ -8,7 +8,7 @@ interface HeroTextProps {
 
 export function HeroText({ children }: HeroTextProps) {
   return (
-    <motion.p 
+    <motion.p
       className="text-2xl md:text-3xl leading-relaxed"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -17,4 +17,4 @@ export function HeroText({ children }: HeroTextProps) {
       {children}
     </motion.p>
   );
-} 
+}

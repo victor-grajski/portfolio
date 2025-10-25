@@ -7,11 +7,11 @@ export default async function TestPage() {
   return (
     <div className="p-8">
       <h1 className="text-3xl font-bold mb-8">Projects Test Page</h1>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {projects.map((project) => (
-          <div 
-            key={project.sys.id} 
+          <div
+            key={project.sys.id}
             className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
           >
             {project.mainImage?.url && (
@@ -24,16 +24,14 @@ export default async function TestPage() {
                 />
               </div>
             )}
-            
+
             <div className="p-4">
               <h2 className="text-xl font-bold mb-2">{project.title || 'Untitled Project'}</h2>
-              {project.subtitle && (
-                <p className="text-gray-600 mb-2">{project.subtitle}</p>
-              )}
+              {project.subtitle && <p className="text-gray-600 mb-2">{project.subtitle}</p>}
               {project.shortDescription && (
                 <p className="text-gray-700">{project.shortDescription}</p>
               )}
-              
+
               {project.isPasswordProtected && (
                 <div className="mt-2">
                   <span className="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded">
@@ -54,4 +52,4 @@ export default async function TestPage() {
       </div>
     </div>
   );
-} 
+}

@@ -21,11 +21,11 @@ export function ProjectAuthWithUrlPassword({ projectSlug }: ProjectAuthWithUrlPa
   // Check for password in URL and auto-authenticate
   useEffect(() => {
     const urlPassword = searchParams.get('pwd');
-    
+
     if (urlPassword && !autoAuthAttempted) {
       setAutoAuthAttempted(true);
       setIsLoading(true);
-      
+
       // Attempt to sign in with the URL password
       signIn('credentials', {
         password: urlPassword,
@@ -41,12 +41,16 @@ export function ProjectAuthWithUrlPassword({ projectSlug }: ProjectAuthWithUrlPa
             }, 500);
           } else {
             // Auto-auth failed - show error and let user try manually
-            setError('The password in the link is incorrect. Please enter the correct password below.');
+            setError(
+              'The password in the link is incorrect. Please enter the correct password below.'
+            );
             setIsLoading(false);
           }
         })
         .catch(() => {
-          setError('An error occurred during authentication. Please try entering the password below.');
+          setError(
+            'An error occurred during authentication. Please try entering the password below.'
+          );
           setIsLoading(false);
         });
     }
@@ -75,7 +79,7 @@ export function ProjectAuthWithUrlPassword({ projectSlug }: ProjectAuthWithUrlPa
       } else {
         setError('Incorrect password');
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setError('An error occurred. Please try again.');
     } finally {
@@ -121,11 +125,9 @@ export function ProjectAuthWithUrlPassword({ projectSlug }: ProjectAuthWithUrlPa
           </button>
         </div>
       </div>
-      
-      {error && (
-        <p className="text-red-500 text-sm">{error}</p>
-      )}
-      
+
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+
       <button
         type="submit"
         disabled={isLoading}
@@ -133,10 +135,15 @@ export function ProjectAuthWithUrlPassword({ projectSlug }: ProjectAuthWithUrlPa
       >
         {isLoading ? 'Verifying...' : 'View Project'}
       </button>
-      
+
       {isDevelopment && (
         <div className="text-sm text-gray-500 mt-4">
-          <p>For development: {process.env.NEXT_PUBLIC_DEV_SKIP_AUTH === 'true' ? 'Auth is currently bypassed' : 'Auth is enabled'}</p>
+          <p>
+            For development:{' '}
+            {process.env.NEXT_PUBLIC_DEV_SKIP_AUTH === 'true'
+              ? 'Auth is currently bypassed'
+              : 'Auth is enabled'}
+          </p>
         </div>
       )}
     </form>

@@ -1,5 +1,6 @@
-import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import type { JWT } from 'next-auth/jwt';
+import type { Session, User } from 'next-auth';
 
 export const authOptions = {
   providers: [
@@ -15,7 +16,7 @@ export const authOptions = {
         }
 
         const correctPassword = process.env.PROJECT_PASSWORD;
-        
+
         if (correctPassword && credentials.password === correctPassword) {
           return {
             id: credentials.projectSlug,
@@ -35,13 +36,13 @@ export const authOptions = {
     signIn: '/projects/:projectSlug/auth',
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: { token: JWT; user: User }) {
       if (user) {
         token.projectSlug = user.id;
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: Session; token: JWT }) {
       if (token && session.user) {
         session.user.id = token.projectSlug as string;
       }

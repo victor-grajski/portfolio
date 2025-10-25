@@ -13,4 +13,4 @@ export const previewClient = new GraphQLClient(CONTENTFUL_URL, {
   headers: {
     Authorization: `Bearer ${process.env.CONTENTFUL_PREVIEW_ACCESS_TOKEN}`,
   },
-}); 
+});

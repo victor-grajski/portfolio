@@ -37,4 +37,4 @@ query GetProjectSlugs {
       slug
     }
   }
-} 
+}

@@ -15,39 +15,39 @@ export async function POST() {
 
   try {
     const filePath = getStateFilePath();
-    
+
     // Delete the file if it exists
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);
       console.log(`Auth state file deleted: ${filePath}`);
     }
-    
+
     // Create response with session clearing cookies
-    const response = NextResponse.json({ 
-      success: true, 
-      message: 'Auth state and session reset to default'
+    const response = NextResponse.json({
+      success: true,
+      message: 'Auth state and session reset to default',
     });
-    
+
     // Clear NextAuth session cookies
     response.cookies.set('next-auth.session-token', '', {
       expires: new Date(0),
       path: '/',
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax'
+      sameSite: 'lax',
     });
-    
+
     response.cookies.set('__Secure-next-auth.session-token', '', {
       expires: new Date(0),
       path: '/',
       httpOnly: true,
       secure: true,
-      sameSite: 'lax'
+      sameSite: 'lax',
     });
-    
+
     return response;
   } catch (error) {
     console.error('Error resetting auth state:', error);
     return NextResponse.json({ error: 'Failed to reset auth state' }, { status: 500 });
   }
-} 
+}

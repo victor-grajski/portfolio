@@ -22,10 +22,10 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
   };
 
   return (
-    <div 
+    <div
       onClick={handleClick}
       className="group bg-black rounded-2xl p-6 md:p-8 hover:scale-[1.02] cursor-pointer relative"
-      style={{ 
+      style={{
         transition: 'all 0.3s cubic-bezier(0.33, 0, 0.2, 1)',
         boxShadow: '0 0 0 rgba(0, 0, 0, 0)',
       }}
@@ -79,4 +79,4 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
   );
 };
 
-export default ProjectCard; 
+export default ProjectCard;

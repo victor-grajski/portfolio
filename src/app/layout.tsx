@@ -24,9 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Navigation />
             </div>
           </header>
-          <main className="pt-20">
-            {children}
-          </main>
+          <main className="pt-20">{children}</main>
           {/* Development auth toggle */}
           <DevAuthToggle />
         </Providers>

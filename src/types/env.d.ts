@@ -8,4 +8,4 @@ declare namespace NodeJS {
     PROJECT_PASSWORD: string;
     DEV_SKIP_AUTH?: string;
   }
-} 
+}

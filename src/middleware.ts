@@ -23,7 +23,7 @@ const getAuthState = (): boolean => {
   } catch (error) {
     console.error('Error reading auth state file:', error);
   }
-  
+
   // Default to environment variable if file doesn't exist
   return process.env.DEV_SKIP_AUTH === 'true';
 };
@@ -34,7 +34,7 @@ function shouldSkipAuth() {
   if (process.env.NODE_ENV === 'production') {
     return process.env.DEV_SKIP_AUTH === 'true';
   }
-  
+
   // In development, use the file-based state with no caching
   const shouldSkip = getAuthState();
   console.log('Should skip auth check?', shouldSkip);
@@ -46,7 +46,7 @@ export async function middleware(req: NextRequest) {
   console.log('DEV_SKIP_AUTH value:', process.env.DEV_SKIP_AUTH);
   console.log('NODE_ENV:', process.env.NODE_ENV);
   console.log('Auth state from file:', getAuthState());
-  
+
   // Skip auth check if we should skip auth
   if (shouldSkipAuth()) {
     console.log('Auth check skipped based on settings');
@@ -69,20 +69,20 @@ export async function middleware(req: NextRequest) {
   if (req.nextUrl.pathname.startsWith('/projects/')) {
     const projectSlug = req.nextUrl.pathname.split('/')[2];
     console.log('Checking project route:', projectSlug);
-    
+
     try {
       const project = await getProjectBySlug(projectSlug);
       console.log('Project password protected:', project?.isPasswordProtected);
-      
+
       // Only redirect if the project exists and is password protected
       if (project?.isPasswordProtected) {
         // Check for both session tokens (development and production)
-        const hasSession = 
-          !!req.cookies.get('next-auth.session-token') || 
+        const hasSession =
+          !!req.cookies.get('next-auth.session-token') ||
           !!req.cookies.get('__Secure-next-auth.session-token');
-        
+
         console.log('Has session:', hasSession);
-        
+
         if (!hasSession) {
           console.log('No session found, redirecting to auth page');
           // Preserve query parameters when redirecting to auth page
@@ -104,4 +104,4 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: ['/projects/:path*', '/'],
-}; 
+};

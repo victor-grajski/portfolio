@@ -11,18 +11,18 @@ export function HomepageAuthWithUrlPassword(): null {
 
   // Only show auth form if pwd parameter is present
   const hasPasswordParam = searchParams.get('pwd');
-  
-  if (!hasPasswordParam) {
-    return null; // Don't render anything if no password parameter
-  }
 
   // Check for password in URL and auto-authenticate
   useEffect(() => {
+    // Don't do anything if no password parameter
+    if (!hasPasswordParam) {
+      return;
+    }
     const urlPassword = searchParams.get('pwd');
-    
+
     if (urlPassword && !autoAuthAttempted) {
       setAutoAuthAttempted(true);
-      
+
       // Attempt to sign in with the URL password using a generic project slug
       signIn('credentials', {
         password: urlPassword,
@@ -42,7 +42,7 @@ export function HomepageAuthWithUrlPassword(): null {
           console.log('An error occurred during authentication');
         });
     }
-  }, [searchParams, router, autoAuthAttempted]);
+  }, [searchParams, router, autoAuthAttempted, hasPasswordParam]);
 
   // Don't show any UI on the homepage - authentication happens silently in the background
   return null;

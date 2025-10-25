@@ -20,7 +20,7 @@ const getAuthState = (): boolean => {
   } catch (error) {
     console.error('Error reading auth state file:', error);
   }
-  
+
   // Default to environment variable if file doesn't exist
   return process.env.DEV_SKIP_AUTH === 'true';
 };
@@ -31,7 +31,7 @@ const setAuthState = (skipAuth: boolean): void => {
     const content = JSON.stringify({ skipAuth, timestamp: Date.now() });
     fs.writeFileSync(filePath, content);
     console.log(`Auth state file updated at ${filePath}:`, content);
-    
+
     // Verify the file was written correctly
     if (fs.existsSync(filePath)) {
       const verifyContent = fs.readFileSync(filePath, 'utf8');
@@ -63,21 +63,21 @@ export async function POST(request: Request) {
     const { skip } = await request.json();
     console.log('POST - Setting auth state to:', skip);
     setAuthState(skip === true);
-    
+
     // Force a small delay to ensure file is written
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
     // Verify the state was set correctly
     const verifiedState = getAuthState();
     console.log('POST - Verified auth state after setting:', verifiedState);
-    
-    return NextResponse.json({ 
-      success: true, 
+
+    return NextResponse.json({
+      success: true,
       skipAuth: skip,
-      verified: verifiedState
+      verified: verifiedState,
     });
   } catch (error) {
     console.error('Error in POST:', error);
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
   }
-} 
+}
