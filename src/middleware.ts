@@ -79,7 +79,13 @@ export async function middleware(req: NextRequest) {
         
         if (!hasSession) {
           console.log('No session found, redirecting to auth page');
-          return NextResponse.redirect(new URL(`/projects/${projectSlug}/auth`, req.url));
+          // Preserve query parameters when redirecting to auth page
+          const authUrl = new URL(`/projects/${projectSlug}/auth`, req.url);
+          // Copy all query parameters from the original request
+          req.nextUrl.searchParams.forEach((value, key) => {
+            authUrl.searchParams.set(key, value);
+          });
+          return NextResponse.redirect(authUrl);
         }
       }
     } catch (error) {

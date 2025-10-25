@@ -1,5 +1,5 @@
 import { getProjectBySlug } from '@/lib/contentful/api';
-import { ProjectAuthForm } from '@/components/ProjectAuthForm';
+import { ProjectAuthWithUrlPassword } from '@/components/ProjectAuthWithUrlPassword';
 import { Metadata } from 'next';
 
 interface ProjectAuthParams {
@@ -54,7 +54,7 @@ export default async function ProjectAuthPage({ params }: ProjectAuthParams) {
       */}
 
       <div className="max-w-lg">
-        <ProjectAuthForm projectSlug={slug} />
+        <ProjectAuthWithUrlPassword projectSlug={slug} />
       </div>
     </div>
   );
