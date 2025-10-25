@@ -59,6 +59,12 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // Homepage is always public - no authentication required
+  if (req.nextUrl.pathname === '/') {
+    console.log('Homepage access - always allowed');
+    return NextResponse.next();
+  }
+
   // Only check project routes
   if (req.nextUrl.pathname.startsWith('/projects/')) {
     const projectSlug = req.nextUrl.pathname.split('/')[2];
@@ -97,5 +103,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/projects/:path*'],
+  matcher: ['/projects/:path*', '/'],
 }; 
