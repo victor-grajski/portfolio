@@ -1,11 +1,6 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 
-// Use a file to store state instead of memory
-const getStateFilePath = () => {
-  return path.join(process.cwd(), '.dev-auth-state.json');
-};
+const DEV_AUTH_COOKIE = 'dev-skip-auth';
 
 export async function POST() {
   // Only allow in development
@@ -14,18 +9,19 @@ export async function POST() {
   }
 
   try {
-    const filePath = getStateFilePath();
-
-    // Delete the file if it exists
-    if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
-      console.log(`Auth state file deleted: ${filePath}`);
-    }
-
-    // Create response with session clearing cookies
+    // Create response with cookies cleared
     const response = NextResponse.json({
       success: true,
       message: 'Auth state and session reset to default',
+    });
+
+    // Clear the dev auth skip cookie
+    response.cookies.set(DEV_AUTH_COOKIE, '', {
+      expires: new Date(0),
+      path: '/',
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
     });
 
     // Clear NextAuth session cookies
@@ -33,7 +29,7 @@ export async function POST() {
       expires: new Date(0),
       path: '/',
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: false, // Always false in dev (this route only runs in development)
       sameSite: 'lax',
     });
 

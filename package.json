@@ -13,7 +13,9 @@
     "format": "prettier --write .",
     "codegen": "graphql-codegen",
     "codegen:watch": "graphql-codegen --watch",
-    "pre-push": "npm run build:check"
+    "clean": "rm -rf .next node_modules/.cache",
+    "clean:dev": "npm run clean && npm run dev",
+    "clean:build": "npm run clean && npm run build"
   },
   "dependencies": {
     "@fontsource/mulish": "^5.1.1",

@@ -1,46 +1,7 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { cookies } from 'next/headers';
 
-// Use a file to store state instead of memory
-const getStateFilePath = () => {
-  return path.join(process.cwd(), '.dev-auth-state.json');
-};
-
-const getAuthState = (): boolean => {
-  try {
-    // Always read fresh from disk, no caching
-    if (fs.existsSync(getStateFilePath())) {
-      const timestamp = Date.now();
-      const fileContent = fs.readFileSync(getStateFilePath(), 'utf8');
-      console.log(`[${timestamp}] API - Auth state file content:`, fileContent);
-      const data = JSON.parse(fileContent);
-      return data.skipAuth === true;
-    }
-  } catch (error) {
-    console.error('Error reading auth state file:', error);
-  }
-
-  // Default to environment variable if file doesn't exist
-  return process.env.DEV_SKIP_AUTH === 'true';
-};
-
-const setAuthState = (skipAuth: boolean): void => {
-  try {
-    const filePath = getStateFilePath();
-    const content = JSON.stringify({ skipAuth, timestamp: Date.now() });
-    fs.writeFileSync(filePath, content);
-    console.log(`Auth state file updated at ${filePath}:`, content);
-
-    // Verify the file was written correctly
-    if (fs.existsSync(filePath)) {
-      const verifyContent = fs.readFileSync(filePath, 'utf8');
-      console.log('Verification - file content after write:', verifyContent);
-    }
-  } catch (error) {
-    console.error('Error writing auth state file:', error);
-  }
-};
+const DEV_AUTH_COOKIE = 'dev-skip-auth';
 
 export async function GET() {
   // Only allow in development
@@ -48,7 +9,8 @@ export async function GET() {
     return NextResponse.json({ error: 'Only available in development' }, { status: 403 });
   }
 
-  const skipAuth = getAuthState();
+  const cookieStore = await cookies();
+  const skipAuth = cookieStore.get(DEV_AUTH_COOKIE)?.value === 'true';
   console.log('GET - Current auth state:', skipAuth);
   return NextResponse.json({ skipAuth });
 }
@@ -62,20 +24,22 @@ export async function POST(request: Request) {
   try {
     const { skip } = await request.json();
     console.log('POST - Setting auth state to:', skip);
-    setAuthState(skip === true);
 
-    // Force a small delay to ensure file is written
-    await new Promise((resolve) => setTimeout(resolve, 100));
-
-    // Verify the state was set correctly
-    const verifiedState = getAuthState();
-    console.log('POST - Verified auth state after setting:', verifiedState);
-
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       skipAuth: skip,
-      verified: verifiedState,
     });
+
+    // Set cookie to store the auth skip state
+    response.cookies.set(DEV_AUTH_COOKIE, skip ? 'true' : 'false', {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: '/',
+    });
+
+    return response;
   } catch (error) {
     console.error('Error in POST:', error);
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });

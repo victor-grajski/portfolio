@@ -7,6 +7,9 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+// Allow dynamic generation of pages not included in generateStaticParams
+export const dynamicParams = true;
+
 async function getProjectData(slug: string) {
   const [project, allProjects] = await Promise.all([getProjectBySlug(slug), getProjects()]);
 
@@ -22,10 +25,17 @@ async function getProjectData(slug: string) {
 }
 
 export async function generateStaticParams() {
-  const projects = await getProjects();
-  return projects.map((project) => ({
-    slug: project.slug,
-  }));
+  try {
+    const projects = await getProjects();
+    return projects.map((project) => ({
+      slug: project.slug,
+    }));
+  } catch (error) {
+    console.error('Failed to fetch projects for static generation:', error);
+    // Return empty array to allow build to continue
+    // Pages will be generated on-demand at runtime
+    return [];
+  }
 }
 
 // Generate metadata for the project page

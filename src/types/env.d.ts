@@ -1,5 +1,6 @@
 declare namespace NodeJS {
   interface ProcessEnv {
+    NODE_ENV: 'development' | 'production' | 'test';
     NEXTAUTH_SECRET: string;
     NEXTAUTH_URL: string;
     CONTENTFUL_SPACE_ID: string;

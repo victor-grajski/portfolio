@@ -1,54 +1,30 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getProjectBySlug } from './lib/contentful/api';
-import fs from 'fs';
-import path from 'path';
 
-// Use a file to store state instead of memory
-const getStateFilePath = () => {
-  return path.join(process.cwd(), '.dev-auth-state.json');
-};
-
-const getAuthState = (): boolean => {
-  try {
-    // Always read fresh from disk, no caching
-    if (fs.existsSync(getStateFilePath())) {
-      // Add a cache-busting timestamp to avoid Node.js module caching
-      const timestamp = Date.now();
-      const fileContent = fs.readFileSync(getStateFilePath(), 'utf8');
-      console.log(`[${timestamp}] Auth state file content:`, fileContent);
-      const data = JSON.parse(fileContent);
-      return data.skipAuth === true;
-    }
-  } catch (error) {
-    console.error('Error reading auth state file:', error);
-  }
-
-  // Default to environment variable if file doesn't exist
-  return process.env.DEV_SKIP_AUTH === 'true';
-};
+const DEV_AUTH_COOKIE = 'dev-skip-auth';
 
 // Function to check if we should skip auth
-function shouldSkipAuth() {
-  // In production, always use the environment variable
-  if (process.env.NODE_ENV === 'production') {
-    return process.env.DEV_SKIP_AUTH === 'true';
+function shouldSkipAuth(req: NextRequest) {
+  // Check environment variable
+  if (process.env.DEV_SKIP_AUTH === 'true') {
+    return true;
   }
 
-  // In development, use the file-based state with no caching
-  const shouldSkip = getAuthState();
-  console.log('Should skip auth check?', shouldSkip);
-  return shouldSkip;
+  // Check cookie (for dev toggle feature)
+  if (process.env.NODE_ENV === 'development') {
+    const devSkipCookie = req.cookies.get(DEV_AUTH_COOKIE);
+    if (devSkipCookie?.value === 'true') {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 export async function middleware(req: NextRequest) {
-  // Debug environment variables
-  console.log('DEV_SKIP_AUTH value:', process.env.DEV_SKIP_AUTH);
-  console.log('NODE_ENV:', process.env.NODE_ENV);
-  console.log('Auth state from file:', getAuthState());
-
   // Skip auth check if we should skip auth
-  if (shouldSkipAuth()) {
+  if (shouldSkipAuth(req)) {
     console.log('Auth check skipped based on settings');
     return NextResponse.next();
   }
