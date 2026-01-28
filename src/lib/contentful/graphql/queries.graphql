@@ -1,3 +1,11 @@
+query GetPortfolio {
+  portfolioCollection(limit: 1) {
+    items {
+      ...PortfolioFields
+    }
+  }
+}
+
 query GetAllProjects {
   projectCollection {
     items {
@@ -35,6 +43,44 @@ query GetProjectSlugs {
   projectCollection {
     items {
       slug
+    }
+  }
+}
+
+query GetPortfolioWithProjectDetails {
+  portfolioCollection(limit: 1) {
+    items {
+      sys {
+        id
+      }
+      _id
+      headline
+      githubUrl
+      aboutMe {
+        ...AboutMeFields
+      }
+      projectsCollection(limit: 100) {
+        items {
+          ...ProjectFields
+          fullDescription {
+            json
+            links {
+              assets {
+                block {
+                  sys {
+                    id
+                  }
+                  url
+                  title
+                  width
+                  height
+                  description
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

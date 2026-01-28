@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Navigation } from '@/components/Navigation';
 import { Providers } from '@/components/Providers';
 import { DevAuthToggle } from '@/components/DevAuthToggle';
+import { getPortfolio } from '@/lib/contentful/api';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -11,17 +12,22 @@ export const metadata: Metadata = {
   description: 'Portfolio of Victor Grajski, Design Engineer',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const portfolio = await getPortfolio();
+
   return (
     <html lang="en">
       <body className="font-mulish min-h-screen bg-[#f8f8f8] text-black">
         <Providers>
           <header className="fixed top-0 left-0 right-0 bg-[#f8f8f8] z-50">
-            <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-              <Link href="/" className="text-lg font-medium relative z-50">
+            <div className="max-w-5xl mx-auto px-6 pt-8 pb-4 flex items-center justify-between">
+              <Link
+                href="/"
+                className="text-[1.5rem] font-normal text-[#131313] tracking-[1px] relative z-50"
+              >
                 Victor Grajski
               </Link>
-              <Navigation />
+              <Navigation githubUrl={portfolio?.githubUrl || undefined} />
             </div>
           </header>
           <main className="pt-20">{children}</main>
