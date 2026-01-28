@@ -74,7 +74,7 @@ export default async function ProjectPage({ params }: Props) {
   const { project, prevProject, nextProject } = data;
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12">
+    <div className="max-w-5xl mx-auto px-6 py-12">
       {/* Title Section */}
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl font-bold mb-3">{project.title}</h1>

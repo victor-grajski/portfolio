@@ -3,45 +3,50 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 
-export function Navigation() {
+interface NavigationProps {
+  githubUrl?: string;
+}
+
+export function Navigation({ githubUrl }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isWorkActive = pathname === '/';
+  const isAboutActive = pathname.startsWith('/about');
 
   return (
     <>
       {/* Desktop Navigation */}
       <nav className="relative flex items-center">
-        <div className="hidden lg:flex items-center gap-6">
-          <Link href="/" className="hover:text-gray-600">
+        <div className="hidden lg:flex items-center gap-12">
+          <Link
+            href="/"
+            className={`text-[20px] font-light transition-opacity hover:opacity-100 ${
+              isWorkActive ? 'opacity-100' : 'opacity-40'
+            }`}
+          >
             Work
           </Link>
-          <Link href="/about" className="hover:text-gray-600">
+          <Link
+            href="/about"
+            className={`text-[20px] font-light transition-opacity hover:opacity-100 ${
+              isAboutActive ? 'opacity-100' : 'opacity-40'
+            }`}
+          >
             About
           </Link>
-          <a
-            href="https://github.com/yourusername"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-gray-600"
-          >
-            GitHub
-          </a>
-          <a
-            href="https://soundcloud.com/yourusername"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-gray-600"
-          >
-            SoundCloud
-          </a>
-          <a
-            href="https://drive.google.com/your-resume-link"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-gray-600"
-          >
-            Resume
-          </a>
+          {githubUrl && (
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[20px] font-light opacity-40 transition-opacity hover:opacity-100"
+            >
+              GitHub
+            </a>
+          )}
         </div>
 
         {/* Mobile/Tablet Hamburger Button */}
@@ -91,48 +96,36 @@ export function Navigation() {
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
             >
-              <div className="max-w-4xl mx-auto px-6 py-4 flex flex-col space-y-4">
+              <div className="max-w-5xl mx-auto px-6 pt-8 pb-4 flex flex-col space-y-4">
                 <Link
                   href="/"
-                  className="text-lg hover:text-gray-600"
+                  className={`text-[20px] font-light transition-opacity hover:opacity-100 ${
+                    isWorkActive ? 'opacity-100' : 'opacity-40'
+                  }`}
                   onClick={() => setIsOpen(false)}
                 >
                   Work
                 </Link>
                 <Link
                   href="/about"
-                  className="text-lg hover:text-gray-600"
+                  className={`text-[20px] font-light transition-opacity hover:opacity-100 ${
+                    isAboutActive ? 'opacity-100' : 'opacity-40'
+                  }`}
                   onClick={() => setIsOpen(false)}
                 >
                   About
                 </Link>
-                <a
-                  href="https://github.com/yourusername"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-lg hover:text-gray-600"
-                  onClick={() => setIsOpen(false)}
-                >
-                  GitHub
-                </a>
-                <a
-                  href="https://soundcloud.com/yourusername"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-lg hover:text-gray-600"
-                  onClick={() => setIsOpen(false)}
-                >
-                  SoundCloud
-                </a>
-                <a
-                  href="https://drive.google.com/your-resume-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-lg hover:text-gray-600"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Resume
-                </a>
+                {githubUrl && (
+                  <a
+                    href={githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[20px] font-light opacity-40 transition-opacity hover:opacity-100"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    GitHub
+                  </a>
+                )}
               </div>
             </motion.div>
           </>

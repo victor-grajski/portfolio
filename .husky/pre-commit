@@ -1,9 +1,6 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 echo "Running lint-staged (auto-fixing linting issues)..."
 npx lint-staged
 
-echo "Running clean build check..."
-npm run clean:build
+echo "Running build check..."
+npm run build:check
 

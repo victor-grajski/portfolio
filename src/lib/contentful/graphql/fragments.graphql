@@ -27,3 +27,38 @@ fragment ProjectFields on Project {
   isPasswordProtected
   externalUrl
 }
+
+fragment AboutMeFields on PortfolioAboutMe {
+  json
+  links {
+    assets {
+      block {
+        sys {
+          id
+        }
+        url
+        title
+        width
+        height
+        description
+      }
+    }
+  }
+}
+
+fragment PortfolioFields on Portfolio {
+  sys {
+    id
+  }
+  _id
+  headline
+  githubUrl
+  aboutMe {
+    ...AboutMeFields
+  }
+  projectsCollection(limit: 100) {
+    items {
+      ...ProjectFields
+    }
+  }
+}

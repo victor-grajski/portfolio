@@ -1,5 +1,6 @@
 import { graphqlClient, previewClient } from './client';
 import { ProjectData } from '@/types/contentful';
+import { GetPortfolioQuery } from './generated/graphql';
 
 // Define types for the API responses
 interface ProjectCollectionResponse {
@@ -159,4 +160,72 @@ export async function getProjectBySlug(slug: string, preview = false): Promise<P
     ...project,
     slug: project.slug,
   };
+}
+
+export async function getPortfolio(preview = false) {
+  const data = await fetchGraphQL<GetPortfolioQuery>(
+    /* GraphQL */
+    `
+      query GetPortfolio {
+        portfolioCollection(limit: 1) {
+          items {
+            sys {
+              id
+            }
+            _id
+            headline
+            githubUrl
+            aboutMe {
+              json
+              links {
+                assets {
+                  block {
+                    sys {
+                      id
+                    }
+                    url
+                    title
+                    width
+                    height
+                    description
+                  }
+                }
+              }
+            }
+            projectsCollection(limit: 100) {
+              items {
+                sys {
+                  id
+                }
+                title
+                slug
+                subtitle
+                shortDescription
+                mainImage {
+                  sys {
+                    id
+                  }
+                  title
+                  description
+                  url
+                  width
+                  height
+                }
+                role
+                duration
+                year
+                tools
+                isPasswordProtected
+                externalUrl
+              }
+            }
+          }
+        }
+      }
+    `,
+    undefined,
+    preview
+  );
+
+  return data.portfolioCollection.items[0] || null;
 }

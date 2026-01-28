@@ -1,4 +1,3 @@
-/* eslint-disable */
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -43,21 +42,25 @@ export type Asset = {
 /** Represents a binary file in a space. An asset can be any file type. */
 export type AssetContentTypeArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Represents a binary file in a space. An asset can be any file type. */
 export type AssetDescriptionArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Represents a binary file in a space. An asset can be any file type. */
 export type AssetFileNameArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Represents a binary file in a space. An asset can be any file type. */
 export type AssetHeightArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Represents a binary file in a space. An asset can be any file type. */
@@ -68,22 +71,26 @@ export type AssetLinkedFromArgs = {
 /** Represents a binary file in a space. An asset can be any file type. */
 export type AssetSizeArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Represents a binary file in a space. An asset can be any file type. */
 export type AssetTitleArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Represents a binary file in a space. An asset can be any file type. */
 export type AssetUrlArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
   transform: InputMaybe<ImageTransformOptions>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Represents a binary file in a space. An asset can be any file type. */
 export type AssetWidthArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type AssetCollection = {
@@ -174,6 +181,7 @@ export type AssetLinkingCollectionsEntryCollectionArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
   preview: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type AssetLinkingCollectionsProjectCollectionArgs = {
@@ -181,6 +189,7 @@ export type AssetLinkingCollectionsProjectCollectionArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
   preview: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type AssetOrder =
@@ -278,6 +287,7 @@ export type EntryOrder =
   | 'sys_publishedVersion_DESC';
 
 export type ImageFormat =
+  /** AVIF image format. */
   | 'AVIF'
   /** JPG image format. */
   | 'JPG'
@@ -369,6 +379,197 @@ export type ImageTransformOptions = {
   width: InputMaybe<Scalars['Dimension']['input']>;
 };
 
+/** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/portfolio) */
+export type Portfolio = Entry &
+  _Node & {
+    __typename?: 'Portfolio';
+    _id: Scalars['ID']['output'];
+    aboutMe: Maybe<PortfolioAboutMe>;
+    contentfulMetadata: ContentfulMetadata;
+    githubUrl: Maybe<Scalars['String']['output']>;
+    headline: Maybe<Scalars['String']['output']>;
+    linkedFrom: Maybe<PortfolioLinkingCollections>;
+    projectsCollection: Maybe<PortfolioProjectsCollection>;
+    sys: Sys;
+  };
+
+/** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/portfolio) */
+export type PortfolioAboutMeArgs = {
+  locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/portfolio) */
+export type PortfolioGithubUrlArgs = {
+  locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/portfolio) */
+export type PortfolioHeadlineArgs = {
+  locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/portfolio) */
+export type PortfolioLinkedFromArgs = {
+  allowedLocales: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+/** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/portfolio) */
+export type PortfolioProjectsCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale: InputMaybe<Scalars['String']['input']>;
+  order: InputMaybe<Array<InputMaybe<PortfolioProjectsCollectionOrder>>>;
+  preview: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
+  where: InputMaybe<ProjectFilter>;
+};
+
+export type PortfolioAboutMe = {
+  __typename?: 'PortfolioAboutMe';
+  json: Scalars['JSON']['output'];
+  links: PortfolioAboutMeLinks;
+};
+
+export type PortfolioAboutMeAssets = {
+  __typename?: 'PortfolioAboutMeAssets';
+  block: Array<Maybe<Asset>>;
+  hyperlink: Array<Maybe<Asset>>;
+};
+
+export type PortfolioAboutMeEntries = {
+  __typename?: 'PortfolioAboutMeEntries';
+  block: Array<Maybe<Entry>>;
+  hyperlink: Array<Maybe<Entry>>;
+  inline: Array<Maybe<Entry>>;
+};
+
+export type PortfolioAboutMeLinks = {
+  __typename?: 'PortfolioAboutMeLinks';
+  assets: PortfolioAboutMeAssets;
+  entries: PortfolioAboutMeEntries;
+  resources: PortfolioAboutMeResources;
+};
+
+export type PortfolioAboutMeResources = {
+  __typename?: 'PortfolioAboutMeResources';
+  block: Array<PortfolioAboutMeResourcesBlock>;
+  hyperlink: Array<PortfolioAboutMeResourcesHyperlink>;
+  inline: Array<PortfolioAboutMeResourcesInline>;
+};
+
+export type PortfolioAboutMeResourcesBlock = ResourceLink & {
+  __typename?: 'PortfolioAboutMeResourcesBlock';
+  sys: ResourceSys;
+};
+
+export type PortfolioAboutMeResourcesHyperlink = ResourceLink & {
+  __typename?: 'PortfolioAboutMeResourcesHyperlink';
+  sys: ResourceSys;
+};
+
+export type PortfolioAboutMeResourcesInline = ResourceLink & {
+  __typename?: 'PortfolioAboutMeResourcesInline';
+  sys: ResourceSys;
+};
+
+export type PortfolioCollection = {
+  __typename?: 'PortfolioCollection';
+  items: Array<Maybe<Portfolio>>;
+  limit: Scalars['Int']['output'];
+  skip: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export type PortfolioFilter = {
+  AND: InputMaybe<Array<InputMaybe<PortfolioFilter>>>;
+  OR: InputMaybe<Array<InputMaybe<PortfolioFilter>>>;
+  aboutMe_contains: InputMaybe<Scalars['String']['input']>;
+  aboutMe_exists: InputMaybe<Scalars['Boolean']['input']>;
+  aboutMe_not_contains: InputMaybe<Scalars['String']['input']>;
+  contentfulMetadata: InputMaybe<ContentfulMetadataFilter>;
+  githubUrl: InputMaybe<Scalars['String']['input']>;
+  githubUrl_contains: InputMaybe<Scalars['String']['input']>;
+  githubUrl_exists: InputMaybe<Scalars['Boolean']['input']>;
+  githubUrl_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  githubUrl_not: InputMaybe<Scalars['String']['input']>;
+  githubUrl_not_contains: InputMaybe<Scalars['String']['input']>;
+  githubUrl_not_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  headline: InputMaybe<Scalars['String']['input']>;
+  headline_contains: InputMaybe<Scalars['String']['input']>;
+  headline_exists: InputMaybe<Scalars['Boolean']['input']>;
+  headline_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  headline_not: InputMaybe<Scalars['String']['input']>;
+  headline_not_contains: InputMaybe<Scalars['String']['input']>;
+  headline_not_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  projects: InputMaybe<CfProjectNestedFilter>;
+  projectsCollection_exists: InputMaybe<Scalars['Boolean']['input']>;
+  sys: InputMaybe<SysFilter>;
+};
+
+export type PortfolioLinkingCollections = {
+  __typename?: 'PortfolioLinkingCollections';
+  entryCollection: Maybe<EntryCollection>;
+};
+
+export type PortfolioLinkingCollectionsEntryCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale: InputMaybe<Scalars['String']['input']>;
+  preview: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type PortfolioOrder =
+  | 'githubUrl_ASC'
+  | 'githubUrl_DESC'
+  | 'headline_ASC'
+  | 'headline_DESC'
+  | 'sys_firstPublishedAt_ASC'
+  | 'sys_firstPublishedAt_DESC'
+  | 'sys_id_ASC'
+  | 'sys_id_DESC'
+  | 'sys_publishedAt_ASC'
+  | 'sys_publishedAt_DESC'
+  | 'sys_publishedVersion_ASC'
+  | 'sys_publishedVersion_DESC';
+
+export type PortfolioProjectsCollection = {
+  __typename?: 'PortfolioProjectsCollection';
+  items: Array<Maybe<Project>>;
+  limit: Scalars['Int']['output'];
+  skip: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export type PortfolioProjectsCollectionOrder =
+  | 'duration_ASC'
+  | 'duration_DESC'
+  | 'externalUrl_ASC'
+  | 'externalUrl_DESC'
+  | 'isPasswordProtected_ASC'
+  | 'isPasswordProtected_DESC'
+  | 'role_ASC'
+  | 'role_DESC'
+  | 'slug_ASC'
+  | 'slug_DESC'
+  | 'subtitle_ASC'
+  | 'subtitle_DESC'
+  | 'sys_firstPublishedAt_ASC'
+  | 'sys_firstPublishedAt_DESC'
+  | 'sys_id_ASC'
+  | 'sys_id_DESC'
+  | 'sys_publishedAt_ASC'
+  | 'sys_publishedAt_DESC'
+  | 'sys_publishedVersion_ASC'
+  | 'sys_publishedVersion_DESC'
+  | 'title_ASC'
+  | 'title_DESC'
+  | 'year_ASC'
+  | 'year_DESC';
+
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type Project = Entry &
   _Node & {
@@ -394,21 +595,25 @@ export type Project = Entry &
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectDurationArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectExternalUrlArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectFullDescriptionArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectIsPasswordProtectedArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
@@ -420,41 +625,49 @@ export type ProjectLinkedFromArgs = {
 export type ProjectMainImageArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
   preview: InputMaybe<Scalars['Boolean']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectRoleArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectShortDescriptionArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectSlugArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectSubtitleArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectTitleArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectToolsArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectYearArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type ProjectCollection = {
@@ -590,6 +803,7 @@ export type ProjectFullDescriptionResourcesInline = ResourceLink & {
 export type ProjectLinkingCollections = {
   __typename?: 'ProjectLinkingCollections';
   entryCollection: Maybe<EntryCollection>;
+  portfolioCollection: Maybe<PortfolioCollection>;
 };
 
 export type ProjectLinkingCollectionsEntryCollectionArgs = {
@@ -597,7 +811,31 @@ export type ProjectLinkingCollectionsEntryCollectionArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
   preview: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
+
+export type ProjectLinkingCollectionsPortfolioCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale: InputMaybe<Scalars['String']['input']>;
+  order: InputMaybe<Array<InputMaybe<ProjectLinkingCollectionsPortfolioCollectionOrder>>>;
+  preview: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type ProjectLinkingCollectionsPortfolioCollectionOrder =
+  | 'githubUrl_ASC'
+  | 'githubUrl_DESC'
+  | 'headline_ASC'
+  | 'headline_DESC'
+  | 'sys_firstPublishedAt_ASC'
+  | 'sys_firstPublishedAt_DESC'
+  | 'sys_id_ASC'
+  | 'sys_id_DESC'
+  | 'sys_publishedAt_ASC'
+  | 'sys_publishedAt_DESC'
+  | 'sys_publishedVersion_ASC'
+  | 'sys_publishedVersion_DESC';
 
 export type ProjectOrder =
   | 'duration_ASC'
@@ -628,9 +866,12 @@ export type ProjectOrder =
 export type Query = {
   __typename?: 'Query';
   _node: Maybe<_Node>;
+  _nodes: Array<Maybe<_Node>>;
   asset: Maybe<Asset>;
   assetCollection: Maybe<AssetCollection>;
   entryCollection: Maybe<EntryCollection>;
+  portfolio: Maybe<Portfolio>;
+  portfolioCollection: Maybe<PortfolioCollection>;
   project: Maybe<Project>;
   projectCollection: Maybe<ProjectCollection>;
 };
@@ -639,12 +880,21 @@ export type Query_NodeArgs = {
   id: Scalars['ID']['input'];
   locale: InputMaybe<Scalars['String']['input']>;
   preview: InputMaybe<Scalars['Boolean']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type Query_NodesArgs = {
+  ids: Array<Scalars['ID']['input']>;
+  locale: InputMaybe<Scalars['String']['input']>;
+  preview: InputMaybe<Scalars['Boolean']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type QueryAssetArgs = {
   id: Scalars['String']['input'];
   locale: InputMaybe<Scalars['String']['input']>;
   preview: InputMaybe<Scalars['Boolean']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type QueryAssetCollectionArgs = {
@@ -653,6 +903,7 @@ export type QueryAssetCollectionArgs = {
   order: InputMaybe<Array<InputMaybe<AssetOrder>>>;
   preview: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
   where: InputMaybe<AssetFilter>;
 };
 
@@ -662,13 +913,32 @@ export type QueryEntryCollectionArgs = {
   order: InputMaybe<Array<InputMaybe<EntryOrder>>>;
   preview: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
   where: InputMaybe<EntryFilter>;
+};
+
+export type QueryPortfolioArgs = {
+  id: Scalars['String']['input'];
+  locale: InputMaybe<Scalars['String']['input']>;
+  preview: InputMaybe<Scalars['Boolean']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type QueryPortfolioCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale: InputMaybe<Scalars['String']['input']>;
+  order: InputMaybe<Array<InputMaybe<PortfolioOrder>>>;
+  preview: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
+  where: InputMaybe<PortfolioFilter>;
 };
 
 export type QueryProjectArgs = {
   id: Scalars['String']['input'];
   locale: InputMaybe<Scalars['String']['input']>;
   preview: InputMaybe<Scalars['Boolean']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type QueryProjectCollectionArgs = {
@@ -677,6 +947,7 @@ export type QueryProjectCollectionArgs = {
   order: InputMaybe<Array<InputMaybe<ProjectOrder>>>;
   preview: InputMaybe<Scalars['Boolean']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
   where: InputMaybe<ProjectFilter>;
 };
 
@@ -748,8 +1019,89 @@ export type TaxonomyConcept = {
   id: Maybe<Scalars['String']['output']>;
 };
 
+export type TimelineFilterInput = {
+  /** Preview content starting from a given release date */
+  release_lte: InputMaybe<Scalars['String']['input']>;
+  /** Preview content starting from a given timestamp */
+  timestamp_lte: InputMaybe<Scalars['DateTime']['input']>;
+};
+
 export type _Node = {
   _id: Scalars['ID']['output'];
+};
+
+export type CfProjectNestedFilter = {
+  AND: InputMaybe<Array<InputMaybe<CfProjectNestedFilter>>>;
+  OR: InputMaybe<Array<InputMaybe<CfProjectNestedFilter>>>;
+  contentfulMetadata: InputMaybe<ContentfulMetadataFilter>;
+  duration: InputMaybe<Scalars['String']['input']>;
+  duration_contains: InputMaybe<Scalars['String']['input']>;
+  duration_exists: InputMaybe<Scalars['Boolean']['input']>;
+  duration_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  duration_not: InputMaybe<Scalars['String']['input']>;
+  duration_not_contains: InputMaybe<Scalars['String']['input']>;
+  duration_not_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  externalUrl: InputMaybe<Scalars['String']['input']>;
+  externalUrl_contains: InputMaybe<Scalars['String']['input']>;
+  externalUrl_exists: InputMaybe<Scalars['Boolean']['input']>;
+  externalUrl_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  externalUrl_not: InputMaybe<Scalars['String']['input']>;
+  externalUrl_not_contains: InputMaybe<Scalars['String']['input']>;
+  externalUrl_not_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  fullDescription_contains: InputMaybe<Scalars['String']['input']>;
+  fullDescription_exists: InputMaybe<Scalars['Boolean']['input']>;
+  fullDescription_not_contains: InputMaybe<Scalars['String']['input']>;
+  isPasswordProtected: InputMaybe<Scalars['Boolean']['input']>;
+  isPasswordProtected_exists: InputMaybe<Scalars['Boolean']['input']>;
+  isPasswordProtected_not: InputMaybe<Scalars['Boolean']['input']>;
+  mainImage_exists: InputMaybe<Scalars['Boolean']['input']>;
+  role: InputMaybe<Scalars['String']['input']>;
+  role_contains: InputMaybe<Scalars['String']['input']>;
+  role_exists: InputMaybe<Scalars['Boolean']['input']>;
+  role_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  role_not: InputMaybe<Scalars['String']['input']>;
+  role_not_contains: InputMaybe<Scalars['String']['input']>;
+  role_not_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  shortDescription: InputMaybe<Scalars['String']['input']>;
+  shortDescription_contains: InputMaybe<Scalars['String']['input']>;
+  shortDescription_exists: InputMaybe<Scalars['Boolean']['input']>;
+  shortDescription_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  shortDescription_not: InputMaybe<Scalars['String']['input']>;
+  shortDescription_not_contains: InputMaybe<Scalars['String']['input']>;
+  shortDescription_not_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  slug: InputMaybe<Scalars['String']['input']>;
+  slug_contains: InputMaybe<Scalars['String']['input']>;
+  slug_exists: InputMaybe<Scalars['Boolean']['input']>;
+  slug_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  slug_not: InputMaybe<Scalars['String']['input']>;
+  slug_not_contains: InputMaybe<Scalars['String']['input']>;
+  slug_not_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  subtitle: InputMaybe<Scalars['String']['input']>;
+  subtitle_contains: InputMaybe<Scalars['String']['input']>;
+  subtitle_exists: InputMaybe<Scalars['Boolean']['input']>;
+  subtitle_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  subtitle_not: InputMaybe<Scalars['String']['input']>;
+  subtitle_not_contains: InputMaybe<Scalars['String']['input']>;
+  subtitle_not_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  sys: InputMaybe<SysFilter>;
+  title: InputMaybe<Scalars['String']['input']>;
+  title_contains: InputMaybe<Scalars['String']['input']>;
+  title_exists: InputMaybe<Scalars['Boolean']['input']>;
+  title_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  title_not: InputMaybe<Scalars['String']['input']>;
+  title_not_contains: InputMaybe<Scalars['String']['input']>;
+  title_not_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  tools_contains_all: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  tools_contains_none: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  tools_contains_some: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  tools_exists: InputMaybe<Scalars['Boolean']['input']>;
+  year: InputMaybe<Scalars['String']['input']>;
+  year_contains: InputMaybe<Scalars['String']['input']>;
+  year_exists: InputMaybe<Scalars['Boolean']['input']>;
+  year_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  year_not: InputMaybe<Scalars['String']['input']>;
+  year_not_contains: InputMaybe<Scalars['String']['input']>;
+  year_not_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 export type AssetFieldsFragment = {
@@ -783,6 +1135,140 @@ export type ProjectFieldsFragment = {
     width: number | null;
     height: number | null;
     sys: { __typename?: 'Sys'; id: string };
+  } | null;
+};
+
+export type AboutMeFieldsFragment = {
+  __typename?: 'PortfolioAboutMe';
+  json: any;
+  links: {
+    __typename?: 'PortfolioAboutMeLinks';
+    assets: {
+      __typename?: 'PortfolioAboutMeAssets';
+      block: Array<{
+        __typename?: 'Asset';
+        url: string | null;
+        title: string | null;
+        width: number | null;
+        height: number | null;
+        description: string | null;
+        sys: { __typename?: 'Sys'; id: string };
+      } | null>;
+    };
+  };
+};
+
+export type PortfolioFieldsFragment = {
+  __typename?: 'Portfolio';
+  _id: string;
+  headline: string | null;
+  githubUrl: string | null;
+  sys: { __typename?: 'Sys'; id: string };
+  aboutMe: {
+    __typename?: 'PortfolioAboutMe';
+    json: any;
+    links: {
+      __typename?: 'PortfolioAboutMeLinks';
+      assets: {
+        __typename?: 'PortfolioAboutMeAssets';
+        block: Array<{
+          __typename?: 'Asset';
+          url: string | null;
+          title: string | null;
+          width: number | null;
+          height: number | null;
+          description: string | null;
+          sys: { __typename?: 'Sys'; id: string };
+        } | null>;
+      };
+    };
+  } | null;
+  projectsCollection: {
+    __typename?: 'PortfolioProjectsCollection';
+    items: Array<{
+      __typename?: 'Project';
+      title: string | null;
+      slug: string | null;
+      subtitle: string | null;
+      shortDescription: string | null;
+      role: string | null;
+      duration: string | null;
+      year: string | null;
+      tools: Array<string | null> | null;
+      isPasswordProtected: boolean | null;
+      externalUrl: string | null;
+      sys: { __typename?: 'Sys'; id: string };
+      mainImage: {
+        __typename?: 'Asset';
+        title: string | null;
+        description: string | null;
+        url: string | null;
+        width: number | null;
+        height: number | null;
+        sys: { __typename?: 'Sys'; id: string };
+      } | null;
+    } | null>;
+  } | null;
+};
+
+export type GetPortfolioQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetPortfolioQuery = {
+  __typename?: 'Query';
+  portfolioCollection: {
+    __typename?: 'PortfolioCollection';
+    items: Array<{
+      __typename?: 'Portfolio';
+      _id: string;
+      headline: string | null;
+      githubUrl: string | null;
+      sys: { __typename?: 'Sys'; id: string };
+      aboutMe: {
+        __typename?: 'PortfolioAboutMe';
+        json: any;
+        links: {
+          __typename?: 'PortfolioAboutMeLinks';
+          assets: {
+            __typename?: 'PortfolioAboutMeAssets';
+            block: Array<{
+              __typename?: 'Asset';
+              url: string | null;
+              title: string | null;
+              width: number | null;
+              height: number | null;
+              description: string | null;
+              sys: { __typename?: 'Sys'; id: string };
+            } | null>;
+          };
+        };
+      } | null;
+      projectsCollection: {
+        __typename?: 'PortfolioProjectsCollection';
+        items: Array<{
+          __typename?: 'Project';
+          title: string | null;
+          slug: string | null;
+          subtitle: string | null;
+          shortDescription: string | null;
+          role: string | null;
+          duration: string | null;
+          year: string | null;
+          tools: Array<string | null> | null;
+          isPasswordProtected: boolean | null;
+          externalUrl: string | null;
+          sys: { __typename?: 'Sys'; id: string };
+          mainImage: {
+            __typename?: 'Asset';
+            title: string | null;
+            description: string | null;
+            url: string | null;
+            width: number | null;
+            height: number | null;
+            sys: { __typename?: 'Sys'; id: string };
+          } | null;
+        } | null>;
+      } | null;
+    } | null>;
   } | null;
 };
 
@@ -878,5 +1364,85 @@ export type GetProjectSlugsQuery = {
   projectCollection: {
     __typename?: 'ProjectCollection';
     items: Array<{ __typename?: 'Project'; slug: string | null } | null>;
+  } | null;
+};
+
+export type GetPortfolioWithProjectDetailsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetPortfolioWithProjectDetailsQuery = {
+  __typename?: 'Query';
+  portfolioCollection: {
+    __typename?: 'PortfolioCollection';
+    items: Array<{
+      __typename?: 'Portfolio';
+      _id: string;
+      headline: string | null;
+      githubUrl: string | null;
+      sys: { __typename?: 'Sys'; id: string };
+      aboutMe: {
+        __typename?: 'PortfolioAboutMe';
+        json: any;
+        links: {
+          __typename?: 'PortfolioAboutMeLinks';
+          assets: {
+            __typename?: 'PortfolioAboutMeAssets';
+            block: Array<{
+              __typename?: 'Asset';
+              url: string | null;
+              title: string | null;
+              width: number | null;
+              height: number | null;
+              description: string | null;
+              sys: { __typename?: 'Sys'; id: string };
+            } | null>;
+          };
+        };
+      } | null;
+      projectsCollection: {
+        __typename?: 'PortfolioProjectsCollection';
+        items: Array<{
+          __typename?: 'Project';
+          title: string | null;
+          slug: string | null;
+          subtitle: string | null;
+          shortDescription: string | null;
+          role: string | null;
+          duration: string | null;
+          year: string | null;
+          tools: Array<string | null> | null;
+          isPasswordProtected: boolean | null;
+          externalUrl: string | null;
+          fullDescription: {
+            __typename?: 'ProjectFullDescription';
+            json: any;
+            links: {
+              __typename?: 'ProjectFullDescriptionLinks';
+              assets: {
+                __typename?: 'ProjectFullDescriptionAssets';
+                block: Array<{
+                  __typename?: 'Asset';
+                  url: string | null;
+                  title: string | null;
+                  width: number | null;
+                  height: number | null;
+                  description: string | null;
+                  sys: { __typename?: 'Sys'; id: string };
+                } | null>;
+              };
+            };
+          } | null;
+          sys: { __typename?: 'Sys'; id: string };
+          mainImage: {
+            __typename?: 'Asset';
+            title: string | null;
+            description: string | null;
+            url: string | null;
+            width: number | null;
+            height: number | null;
+            sys: { __typename?: 'Sys'; id: string };
+          } | null;
+        } | null>;
+      } | null;
+    } | null>;
   } | null;
 };

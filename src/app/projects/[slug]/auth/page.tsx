@@ -33,7 +33,7 @@ export default async function ProjectAuthPage({ params }: ProjectAuthParams) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12">
+    <div className="max-w-5xl mx-auto px-6 py-12">
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl font-bold mb-3">{project.title}</h1>
         {project.subtitle && <p className="text-xl md:text-2xl opacity-80">{project.subtitle}</p>}
