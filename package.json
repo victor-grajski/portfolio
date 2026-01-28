@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev & sleep 2 && npm run open-browser",
-    "open-browser": "open http://localhost:3000",
+    "dev": "next dev",
     "build": "next build",
     "build:check": "NEXT_DIST_DIR=.next-build-check next build",
     "start": "next start",

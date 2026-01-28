@@ -39,5 +39,4 @@ export type ProjectData = {
   year?: string;
   tools?: string[];
   isPasswordProtected?: boolean;
-  externalUrl?: string;
 };

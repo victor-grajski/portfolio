@@ -8,14 +8,8 @@ interface HeroTextProps {
 
 export function HeroText({ children }: HeroTextProps) {
   return (
-    <motion.p
-      className="text-2xl md:text-3xl my-16"
-      style={{ lineHeight: '1.5' }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
+    <p className="text-2xl md:text-3xl my-16 min-h-[12rem]" style={{ lineHeight: '1.5' }}>
       {children}
-    </motion.p>
+    </p>
   );
 }

@@ -10,6 +10,9 @@ interface Props {
 // Allow dynamic generation of pages not included in generateStaticParams
 export const dynamicParams = true;
 
+// Revalidate every hour (3600 seconds)
+export const revalidate = 3600;
+
 async function getProjectData(slug: string) {
   const [project, allProjects] = await Promise.all([getProjectBySlug(slug), getProjects()]);
 
@@ -125,7 +128,7 @@ export default async function ProjectPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Right Column - Description and Link */}
+        {/* Right Column - Description */}
         <div className="lg:w-2/3">
           {project.fullDescription?.json && (
             <div className="mb-8">
@@ -133,17 +136,6 @@ export default async function ProjectPage({ params }: Props) {
                 {project.fullDescription.json.content?.[0]?.content?.[0]?.value || ''}
               </p>
             </div>
-          )}
-
-          {project.externalUrl && (
-            <a
-              href={project.externalUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors"
-            >
-              View Project
-            </a>
           )}
         </div>
       </div>

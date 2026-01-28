@@ -44,7 +44,6 @@ interface ProjectCollectionResponse {
       year?: string;
       tools?: string[];
       isPasswordProtected?: boolean;
-      externalUrl?: string;
     }>;
   };
 }
@@ -141,7 +140,6 @@ export async function getProjectBySlug(slug: string, preview = false): Promise<P
             year
             tools
             isPasswordProtected
-            externalUrl
           }
         }
       }
@@ -216,7 +214,6 @@ export async function getPortfolio(preview = false) {
                 year
                 tools
                 isPasswordProtected
-                externalUrl
               }
             }
           }
