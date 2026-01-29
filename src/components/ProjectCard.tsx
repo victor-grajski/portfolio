@@ -68,23 +68,28 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
         )}
       </div>
 
-      {/* Password Protected Badge - Bottom Left */}
-      {project.isPasswordProtected && (
-        <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8">
-          <span
-            className={`inline-flex items-center gap-2 border text-sm px-3 py-1 rounded-md bg-transparent ${
-              session ? 'border-emerald-700 text-emerald-700' : 'border-gray-400 text-gray-400'
-            }`}
-          >
-            {session ? (
-              <LockOpenIcon className="w-4 h-4" />
-            ) : (
+      {/* Lock Status Badge - Bottom Left */}
+      <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8">
+        <span
+          className={`inline-flex items-center gap-2 border text-sm px-3 py-1 rounded-md bg-transparent ${
+            project.isPasswordProtected && !session
+              ? 'border-gray-400 text-gray-400'
+              : 'border-emerald-700 text-emerald-700'
+          }`}
+        >
+          {project.isPasswordProtected && !session ? (
+            <>
               <LockClosedIcon className="w-4 h-4" />
-            )}
-            {session ? 'Unlocked' : 'Password Protected'}
-          </span>
-        </div>
-      )}
+              Password Protected
+            </>
+          ) : (
+            <>
+              <LockOpenIcon className="w-4 h-4" />
+              Unlocked
+            </>
+          )}
+        </span>
+      </div>
     </div>
   );
 };
