@@ -39,6 +39,11 @@ interface ProjectCollectionResponse {
         width?: number;
         height?: number;
       };
+      demoVideo?: {
+        url?: string;
+        width?: number;
+        height?: number;
+      };
       role?: string;
       duration?: string;
       year?: string;
@@ -78,6 +83,11 @@ export async function getProjects(preview = false): Promise<ProjectData[]> {
             subtitle
             shortDescription
             mainImage {
+              url
+              width
+              height
+            }
+            demoVideo {
               url
               width
               height
@@ -131,6 +141,11 @@ export async function getProjectBySlug(slug: string, preview = false): Promise<P
               }
             }
             mainImage {
+              url
+              width
+              height
+            }
+            demoVideo {
               url
               width
               height
