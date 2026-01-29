@@ -25,7 +25,6 @@ fragment ProjectFields on Project {
   year
   tools
   isPasswordProtected
-  externalUrl
 }
 
 fragment AboutMeFields on PortfolioAboutMe {

@@ -5,6 +5,9 @@ import { HomepageAuthWithUrlPassword } from '@/components/HomepageAuthWithUrlPas
 import { ProjectData } from '@/types/contentful';
 import { Suspense } from 'react';
 
+// Revalidate every hour (3600 seconds)
+export const revalidate = 3600;
+
 export default async function HomePage() {
   // Get portfolio data which includes projects
   const portfolio = await getPortfolio();
@@ -31,11 +34,10 @@ export default async function HomePage() {
         year: project!.year ?? undefined,
         tools: project!.tools?.filter((tool): tool is string => tool !== null) ?? undefined,
         isPasswordProtected: project!.isPasswordProtected ?? undefined,
-        externalUrl: project!.externalUrl ?? undefined,
       })) || [];
 
   return (
-    <div className="max-w-5xl mx-auto px-6">
+    <div className="max-w-5xl mx-auto px-6 pb-16">
       {/* Silent authentication handler - no UI shown */}
       <Suspense fallback={null}>
         <HomepageAuthWithUrlPassword />

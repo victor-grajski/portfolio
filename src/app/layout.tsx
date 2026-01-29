@@ -1,4 +1,5 @@
-import '@fontsource/mulish';
+import '@fontsource/mulish/400.css';
+import '@fontsource/mulish/700.css';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Navigation } from '@/components/Navigation';

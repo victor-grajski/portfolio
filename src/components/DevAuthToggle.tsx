@@ -7,10 +7,41 @@ export function DevAuthToggle() {
   const [isSkipped, setIsSkipped] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isVisible, setIsVisible] = useState(false);
   const { data: session, status } = useSession();
 
   // Only show in development
   const isDevelopment = process.env.NODE_ENV === 'development';
+
+  // Load visibility preference from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('devToolsVisible');
+    if (saved !== null) {
+      setIsVisible(saved === 'true');
+    }
+  }, []);
+
+  // Save visibility preference to localStorage
+  const toggleVisibility = () => {
+    const newValue = !isVisible;
+    setIsVisible(newValue);
+    localStorage.setItem('devToolsVisible', String(newValue));
+  };
+
+  // Keyboard shortcut: Ctrl/Cmd + Shift + D
+  useEffect(() => {
+    if (!isDevelopment) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'D') {
+        e.preventDefault();
+        toggleVisibility();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isDevelopment, isVisible]);
 
   const fetchState = async () => {
     try {
@@ -108,9 +139,63 @@ export function DevAuthToggle() {
 
   if (!isDevelopment) return null;
 
+  // Minimized toggle button
+  if (!isVisible) {
+    return (
+      <button
+        onClick={toggleVisibility}
+        className="fixed bottom-4 right-4 bg-gray-800 text-white p-2 rounded-lg shadow-lg z-50 hover:bg-gray-700 transition-colors"
+        title="Show Dev Tools (Ctrl+Shift+D)"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+          />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          />
+        </svg>
+      </button>
+    );
+  }
+
   return (
     <div className="fixed bottom-4 right-4 bg-gray-800 text-white p-3 rounded-lg shadow-lg z-50 max-w-xs">
-      <div className="text-sm font-medium mb-2">Development Tools</div>
+      <div className="flex items-center justify-between mb-2">
+        <div className="text-sm font-medium">Development Tools</div>
+        <button
+          onClick={toggleVisibility}
+          className="text-gray-400 hover:text-white transition-colors ml-2"
+          title="Hide Dev Tools (Ctrl+Shift+D)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
       {isLoading ? (
         <div className="text-xs">Loading...</div>
       ) : error ? (
