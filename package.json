@@ -17,6 +17,8 @@
     "clean:build": "npm run clean && npm run build:check"
   },
   "dependencies": {
+    "@contentful/rich-text-react-renderer": "^16.1.6",
+    "@contentful/rich-text-types": "^17.2.5",
     "@fontsource/mulish": "^5.1.1",
     "@graphql-codegen/cli": "^5.0.4",
     "@graphql-codegen/typescript": "^4.1.3",
