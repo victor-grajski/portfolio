@@ -4,9 +4,20 @@ import ProjectCard from '@/components/ProjectCard';
 import { HomepageAuthWithUrlPassword } from '@/components/HomepageAuthWithUrlPassword';
 import { ProjectData } from '@/types/contentful';
 import { Suspense } from 'react';
+import { Metadata } from 'next';
 
 // Revalidate every hour (3600 seconds)
 export const revalidate = 3600;
+
+// Generate metadata for the homepage using the headline from Contentful
+export async function generateMetadata(): Promise<Metadata> {
+  const portfolio = await getPortfolio();
+
+  return {
+    title: 'Victor Grajski - Design Engineer',
+    description: portfolio?.headline || 'Portfolio of Victor Grajski, Design Engineer',
+  };
+}
 
 export default async function HomePage() {
   // Get portfolio data which includes projects
