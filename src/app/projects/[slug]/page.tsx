@@ -101,8 +101,8 @@ async function getProjectData(slug: string) {
   }
 
   const currentIndex = allProjects.findIndex((p) => p.slug === project.slug);
-  const nextProject = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
-  const prevProject = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null;
+  const prevProject = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
+  const nextProject = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null;
 
   return { project, prevProject, nextProject };
 }
