@@ -5,6 +5,9 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { documentToReactComponents, Options } from '@contentful/rich-text-react-renderer';
 import { BLOCKS, INLINES, MARKS, Document } from '@contentful/rich-text-types';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -22,8 +25,7 @@ interface ContentfulAsset {
 // Allow dynamic generation of pages not included in generateStaticParams
 export const dynamicParams = true;
 
-// Revalidate every hour (3600 seconds)
-export const revalidate = 3600;
+// No revalidate - using SSR for security (content not pre-rendered)
 
 // Create rich text options with asset rendering support
 function getRichTextOptions(assetMap: Map<string, ContentfulAsset>): Options {
@@ -144,18 +146,38 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProjectPage({ params }: Props) {
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
+
+  // Check authentication first for password-protected projects
+  const session = await getServerSession(authOptions);
+
+  // Get basic project info to check if it's password protected
+  const project = await getProjectBySlug(slug);
+
+  if (!project) {
+    return <div>Project not found</div>;
+  }
+
+  // If project is password protected and user is not authenticated, redirect to auth page
+  if (project.isPasswordProtected && !session) {
+    redirect(`/projects/${slug}/auth`);
+  }
+
+  // Now fetch full project data with navigation
   const data = await getProjectData(slug);
 
   if (!data) {
     return <div>Project not found</div>;
   }
 
-  const { project, prevProject, nextProject } = data;
+  const { project: fullProject, prevProject, nextProject } = data;
+
+  // Use the full project data for rendering
+  const projectData = fullProject;
 
   // Create asset map from fullDescription links
   const assetMap = new Map<string, ContentfulAsset>();
-  if (project.fullDescription?.links?.assets?.block) {
-    project.fullDescription.links.assets.block.forEach((asset) => {
+  if (projectData.fullDescription?.links?.assets?.block) {
+    projectData.fullDescription.links.assets.block.forEach((asset) => {
       if (asset?.sys?.id && asset.url) {
         assetMap.set(asset.sys.id, asset as ContentfulAsset);
       }
@@ -168,16 +190,18 @@ export default async function ProjectPage({ params }: Props) {
     <div className="max-w-5xl mx-auto px-6 py-12">
       {/* Title Section */}
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-extrabold mb-3">{project.title}</h1>
-        {project.subtitle && <p className="text-xl md:text-2xl opacity-50">{project.subtitle}</p>}
+        <h1 className="text-3xl md:text-4xl font-extrabold mb-3">{projectData.title}</h1>
+        {projectData.subtitle && (
+          <p className="text-xl md:text-2xl opacity-50">{projectData.subtitle}</p>
+        )}
       </div>
 
       {/* Main Image */}
-      {project.mainImage?.url && (
+      {projectData.mainImage?.url && (
         <div className="relative w-full aspect-[16/9] mb-12">
           <Image
-            src={project.mainImage.url}
-            alt={project.title}
+            src={projectData.mainImage.url}
+            alt={projectData.title}
             fill
             className="object-cover rounded-xl"
           />
@@ -189,28 +213,28 @@ export default async function ProjectPage({ params }: Props) {
         {/* Left Column - Project Details */}
         <div className="lg:w-1/3 mb-8 lg:mb-0">
           <div className="space-y-6">
-            {project.role && (
+            {projectData.role && (
               <div>
                 <h2 className="text-lg font-semibold mb-1 text-[#454545]">Role</h2>
-                <p className="opacity-80 text-[#454545]">{project.role}</p>
+                <p className="opacity-80 text-[#454545]">{projectData.role}</p>
               </div>
             )}
-            {project.duration && (
+            {projectData.duration && (
               <div>
                 <h2 className="text-lg font-semibold mb-1 text-[#454545]">Duration</h2>
-                <p className="opacity-80 text-[#454545]">{project.duration}</p>
+                <p className="opacity-80 text-[#454545]">{projectData.duration}</p>
               </div>
             )}
-            {project.year && (
+            {projectData.year && (
               <div>
                 <h2 className="text-lg font-semibold mb-1 text-[#454545]">Year</h2>
-                <p className="opacity-80 text-[#454545]">{project.year}</p>
+                <p className="opacity-80 text-[#454545]">{projectData.year}</p>
               </div>
             )}
-            {project.tools && project.tools.length > 0 && (
+            {projectData.tools && projectData.tools.length > 0 && (
               <div>
                 <h2 className="text-lg font-semibold mb-1 text-[#454545]">Tools</h2>
-                <p className="opacity-80 text-[#454545]">{project.tools.join(', ')}</p>
+                <p className="opacity-80 text-[#454545]">{projectData.tools.join(', ')}</p>
               </div>
             )}
           </div>
@@ -218,10 +242,10 @@ export default async function ProjectPage({ params }: Props) {
 
         {/* Right Column - Description */}
         <div className="lg:w-2/3">
-          {project.fullDescription?.json && (
+          {projectData.fullDescription?.json && (
             <div className="mb-8 prose prose-invert max-w-none text-[#454545]">
               {documentToReactComponents(
-                project.fullDescription.json as unknown as Document,
+                projectData.fullDescription.json as unknown as Document,
                 richTextOptions
               )}
             </div>
@@ -234,7 +258,7 @@ export default async function ProjectPage({ params }: Props) {
         {prevProject ? (
           <Link
             href={`/projects/${prevProject.slug}`}
-            className="flex items-center text-lg hover:opacity-70 transition-opacity text-[#219897] max-w-[50%] md:max-w-none flex-shrink"
+            className="flex items-center text-lg hover:opacity-70 transition-opacity text-[#454545] max-w-[50%] md:max-w-none flex-shrink"
           >
             <span className="mr-2 flex-shrink-0">←</span>
             <span className="break-words">{prevProject.title}</span>
@@ -246,7 +270,7 @@ export default async function ProjectPage({ params }: Props) {
         {nextProject ? (
           <Link
             href={`/projects/${nextProject.slug}`}
-            className="flex items-center justify-end text-lg hover:opacity-70 transition-opacity text-[#219897] max-w-[50%] md:max-w-none text-right flex-shrink"
+            className="flex items-center justify-end text-lg hover:opacity-70 transition-opacity text-[#454545] max-w-[50%] md:max-w-none text-right flex-shrink"
           >
             <span className="break-words">{nextProject.title}</span>
             <span className="ml-2 flex-shrink-0">→</span>
