@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
 interface NavigationProps {
@@ -11,10 +11,15 @@ interface NavigationProps {
 
 export function Navigation({ githubUrl }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
 
-  const isWorkActive = pathname === '/';
-  const isAboutActive = pathname.startsWith('/about');
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isWorkActive = mounted && pathname === '/';
+  const isAboutActive = mounted && pathname.startsWith('/about');
 
   return (
     <>
