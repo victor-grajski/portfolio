@@ -232,14 +232,14 @@ export default async function ProjectPage({ params }: Props) {
       </div>
 
       {/* Previous/Next Navigation */}
-      <div className="mt-16 pt-8 border-t flex justify-between">
+      <div className="mt-16 pt-8 border-t flex flex-row justify-between gap-4">
         {prevProject ? (
           <Link
             href={`/projects/${prevProject.slug}`}
-            className="flex items-center text-lg hover:opacity-70 transition-opacity text-[#219897]"
+            className="flex items-center text-lg hover:opacity-70 transition-opacity text-[#219897] max-w-[50%] md:max-w-none flex-shrink"
           >
-            <span className="mr-2">←</span>
-            <span>{prevProject.title}</span>
+            <span className="mr-2 flex-shrink-0">←</span>
+            <span className="break-words">{prevProject.title}</span>
           </Link>
         ) : (
           <div />
@@ -248,10 +248,10 @@ export default async function ProjectPage({ params }: Props) {
         {nextProject ? (
           <Link
             href={`/projects/${nextProject.slug}`}
-            className="flex items-center text-lg hover:opacity-70 transition-opacity text-[#219897]"
+            className="flex items-center justify-end text-lg hover:opacity-70 transition-opacity text-[#219897] max-w-[50%] md:max-w-none text-right flex-shrink"
           >
-            <span>{nextProject.title}</span>
-            <span className="ml-2">→</span>
+            <span className="break-words">{nextProject.title}</span>
+            <span className="ml-2 flex-shrink-0">→</span>
           </Link>
         ) : (
           <div />
