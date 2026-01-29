@@ -131,15 +131,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  // If the project is password protected, add noindex meta tag
-  const robots = project.isPasswordProtected
-    ? { index: false, follow: false }
-    : { index: true, follow: true };
-
   return {
     title: `${project.title} | Victor Grajski`,
     description: project.subtitle || `Project by Victor Grajski`,
-    robots,
+    robots: {
+      index: false,
+      follow: false,
+    },
   };
 }
 

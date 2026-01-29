@@ -7,6 +7,10 @@ import { BLOCKS, INLINES, MARKS, Document } from '@contentful/rich-text-types';
 export const metadata = {
   title: 'About | Victor Grajski',
   description: 'Learn more about Victor Grajski - background, skills, and experience.',
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 interface ContentfulAsset {
