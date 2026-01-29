@@ -1,6 +1,8 @@
 import '@fontsource/mulish/400.css';
 import '@fontsource/mulish/700.css';
 import type { Metadata } from 'next';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import Link from 'next/link';
 import { Navigation } from '@/components/Navigation';
 import { Providers } from '@/components/Providers';
@@ -35,6 +37,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {/* Development auth toggle */}
           <DevAuthToggle />
         </Providers>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
