@@ -8,6 +8,7 @@
     "build:check": "NEXT_DIST_DIR=.next-build-check next build",
     "start": "next start",
     "lint": "next lint",
+    "typecheck": "tsc --noEmit",
     "prepare": "husky",
     "format": "prettier --write .",
     "codegen": "graphql-codegen",

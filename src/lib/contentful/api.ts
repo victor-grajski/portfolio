@@ -39,6 +39,11 @@ interface ProjectCollectionResponse {
         width?: number;
         height?: number;
       };
+      demoVideo?: {
+        url?: string;
+        width?: number;
+        height?: number;
+      };
       role?: string;
       duration?: string;
       year?: string;
@@ -64,39 +69,41 @@ export async function fetchGraphQL<T = unknown>(
 }
 
 export async function getProjects(preview = false): Promise<ProjectData[]> {
-  const data = await fetchGraphQL<ProjectCollectionResponse>(
-    /* GraphQL */
-    `
-      query GetAllProjects {
-        projectCollection {
-          items {
-            sys {
-              id
-            }
-            title
-            slug
-            subtitle
-            shortDescription
-            mainImage {
-              url
-              width
-              height
-            }
-            isPasswordProtected
-          }
-        }
-      }
-    `,
-    undefined,
-    preview
-  );
+  // Fetch projects from Portfolio to maintain consistent ordering
+  const portfolio = await getPortfolio(preview);
 
-  // Filter out projects without a slug
-  return data.projectCollection.items
+  if (!portfolio?.projectsCollection?.items) {
+    return [];
+  }
+
+  // Filter out projects without a slug and map to ProjectData format
+  return portfolio.projectsCollection.items
     .filter((item) => item.slug)
     .map((item) => ({
-      ...item,
-      slug: item.slug as string, // Type assertion since we've filtered out undefined values
+      sys: { id: item.sys.id },
+      title: item.title ?? undefined,
+      slug: item.slug as string,
+      subtitle: item.subtitle ?? undefined,
+      shortDescription: item.shortDescription ?? undefined,
+      mainImage: item.mainImage?.url
+        ? {
+            url: item.mainImage.url,
+            width: item.mainImage.width ?? undefined,
+            height: item.mainImage.height ?? undefined,
+          }
+        : undefined,
+      demoVideo: item.demoVideo?.url
+        ? {
+            url: item.demoVideo.url,
+            width: item.demoVideo.width ?? undefined,
+            height: item.demoVideo.height ?? undefined,
+          }
+        : undefined,
+      role: item.role ?? undefined,
+      duration: item.duration ?? undefined,
+      year: item.year ?? undefined,
+      tools: item.tools?.filter((tool): tool is string => tool !== null) ?? undefined,
+      isPasswordProtected: item.isPasswordProtected ?? undefined,
     }));
 }
 
@@ -131,6 +138,11 @@ export async function getProjectBySlug(slug: string, preview = false): Promise<P
               }
             }
             mainImage {
+              url
+              width
+              height
+            }
+            demoVideo {
               url
               width
               height
@@ -205,6 +217,11 @@ export async function getPortfolio(preview = false) {
                   }
                   title
                   description
+                  url
+                  width
+                  height
+                }
+                demoVideo {
                   url
                   width
                   height

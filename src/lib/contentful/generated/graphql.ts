@@ -391,6 +391,7 @@ export type Portfolio = Entry &
     linkedFrom: Maybe<PortfolioLinkingCollections>;
     projectsCollection: Maybe<PortfolioProjectsCollection>;
     sys: Sys;
+    title: Maybe<Scalars['String']['output']>;
   };
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/portfolio) */
@@ -425,6 +426,12 @@ export type PortfolioProjectsCollectionArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
   where: InputMaybe<ProjectFilter>;
+};
+
+/** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/portfolio) */
+export type PortfolioTitleArgs = {
+  locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type PortfolioAboutMe = {
@@ -507,6 +514,13 @@ export type PortfolioFilter = {
   projects: InputMaybe<CfProjectNestedFilter>;
   projectsCollection_exists: InputMaybe<Scalars['Boolean']['input']>;
   sys: InputMaybe<SysFilter>;
+  title: InputMaybe<Scalars['String']['input']>;
+  title_contains: InputMaybe<Scalars['String']['input']>;
+  title_exists: InputMaybe<Scalars['Boolean']['input']>;
+  title_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  title_not: InputMaybe<Scalars['String']['input']>;
+  title_not_contains: InputMaybe<Scalars['String']['input']>;
+  title_not_in: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 export type PortfolioLinkingCollections = {
@@ -534,7 +548,9 @@ export type PortfolioOrder =
   | 'sys_publishedAt_ASC'
   | 'sys_publishedAt_DESC'
   | 'sys_publishedVersion_ASC'
-  | 'sys_publishedVersion_DESC';
+  | 'sys_publishedVersion_DESC'
+  | 'title_ASC'
+  | 'title_DESC';
 
 export type PortfolioProjectsCollection = {
   __typename?: 'PortfolioProjectsCollection';
@@ -576,6 +592,7 @@ export type Project = Entry &
     __typename?: 'Project';
     _id: Scalars['ID']['output'];
     contentfulMetadata: ContentfulMetadata;
+    demoVideo: Maybe<Asset>;
     duration: Maybe<Scalars['String']['output']>;
     externalUrl: Maybe<Scalars['String']['output']>;
     fullDescription: Maybe<ProjectFullDescription>;
@@ -591,6 +608,13 @@ export type Project = Entry &
     tools: Maybe<Array<Maybe<Scalars['String']['output']>>>;
     year: Maybe<Scalars['String']['output']>;
   };
+
+/** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
+export type ProjectDemoVideoArgs = {
+  locale: InputMaybe<Scalars['String']['input']>;
+  preview: InputMaybe<Scalars['Boolean']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
+};
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectDurationArgs = {
@@ -682,6 +706,7 @@ export type ProjectFilter = {
   AND: InputMaybe<Array<InputMaybe<ProjectFilter>>>;
   OR: InputMaybe<Array<InputMaybe<ProjectFilter>>>;
   contentfulMetadata: InputMaybe<ContentfulMetadataFilter>;
+  demoVideo_exists: InputMaybe<Scalars['Boolean']['input']>;
   duration: InputMaybe<Scalars['String']['input']>;
   duration_contains: InputMaybe<Scalars['String']['input']>;
   duration_exists: InputMaybe<Scalars['Boolean']['input']>;
@@ -835,7 +860,9 @@ export type ProjectLinkingCollectionsPortfolioCollectionOrder =
   | 'sys_publishedAt_ASC'
   | 'sys_publishedAt_DESC'
   | 'sys_publishedVersion_ASC'
-  | 'sys_publishedVersion_DESC';
+  | 'sys_publishedVersion_DESC'
+  | 'title_ASC'
+  | 'title_DESC';
 
 export type ProjectOrder =
   | 'duration_ASC'
@@ -1034,6 +1061,7 @@ export type CfProjectNestedFilter = {
   AND: InputMaybe<Array<InputMaybe<CfProjectNestedFilter>>>;
   OR: InputMaybe<Array<InputMaybe<CfProjectNestedFilter>>>;
   contentfulMetadata: InputMaybe<ContentfulMetadataFilter>;
+  demoVideo_exists: InputMaybe<Scalars['Boolean']['input']>;
   duration: InputMaybe<Scalars['String']['input']>;
   duration_contains: InputMaybe<Scalars['String']['input']>;
   duration_exists: InputMaybe<Scalars['Boolean']['input']>;
@@ -1125,7 +1153,6 @@ export type ProjectFieldsFragment = {
   year: string | null;
   tools: Array<string | null> | null;
   isPasswordProtected: boolean | null;
-  externalUrl: string | null;
   sys: { __typename?: 'Sys'; id: string };
   mainImage: {
     __typename?: 'Asset';
@@ -1135,6 +1162,12 @@ export type ProjectFieldsFragment = {
     width: number | null;
     height: number | null;
     sys: { __typename?: 'Sys'; id: string };
+  } | null;
+  demoVideo: {
+    __typename?: 'Asset';
+    url: string | null;
+    width: number | null;
+    height: number | null;
   } | null;
 };
 
@@ -1196,7 +1229,6 @@ export type PortfolioFieldsFragment = {
       year: string | null;
       tools: Array<string | null> | null;
       isPasswordProtected: boolean | null;
-      externalUrl: string | null;
       sys: { __typename?: 'Sys'; id: string };
       mainImage: {
         __typename?: 'Asset';
@@ -1206,6 +1238,12 @@ export type PortfolioFieldsFragment = {
         width: number | null;
         height: number | null;
         sys: { __typename?: 'Sys'; id: string };
+      } | null;
+      demoVideo: {
+        __typename?: 'Asset';
+        url: string | null;
+        width: number | null;
+        height: number | null;
       } | null;
     } | null>;
   } | null;
@@ -1255,7 +1293,6 @@ export type GetPortfolioQuery = {
           year: string | null;
           tools: Array<string | null> | null;
           isPasswordProtected: boolean | null;
-          externalUrl: string | null;
           sys: { __typename?: 'Sys'; id: string };
           mainImage: {
             __typename?: 'Asset';
@@ -1265,6 +1302,12 @@ export type GetPortfolioQuery = {
             width: number | null;
             height: number | null;
             sys: { __typename?: 'Sys'; id: string };
+          } | null;
+          demoVideo: {
+            __typename?: 'Asset';
+            url: string | null;
+            width: number | null;
+            height: number | null;
           } | null;
         } | null>;
       } | null;
@@ -1289,7 +1332,6 @@ export type GetAllProjectsQuery = {
       year: string | null;
       tools: Array<string | null> | null;
       isPasswordProtected: boolean | null;
-      externalUrl: string | null;
       sys: { __typename?: 'Sys'; id: string };
       mainImage: {
         __typename?: 'Asset';
@@ -1299,6 +1341,12 @@ export type GetAllProjectsQuery = {
         width: number | null;
         height: number | null;
         sys: { __typename?: 'Sys'; id: string };
+      } | null;
+      demoVideo: {
+        __typename?: 'Asset';
+        url: string | null;
+        width: number | null;
+        height: number | null;
       } | null;
     } | null>;
   } | null;
@@ -1323,7 +1371,6 @@ export type GetProjectBySlugQuery = {
       year: string | null;
       tools: Array<string | null> | null;
       isPasswordProtected: boolean | null;
-      externalUrl: string | null;
       fullDescription: {
         __typename?: 'ProjectFullDescription';
         json: any;
@@ -1352,6 +1399,12 @@ export type GetProjectBySlugQuery = {
         width: number | null;
         height: number | null;
         sys: { __typename?: 'Sys'; id: string };
+      } | null;
+      demoVideo: {
+        __typename?: 'Asset';
+        url: string | null;
+        width: number | null;
+        height: number | null;
       } | null;
     } | null>;
   } | null;
@@ -1411,7 +1464,6 @@ export type GetPortfolioWithProjectDetailsQuery = {
           year: string | null;
           tools: Array<string | null> | null;
           isPasswordProtected: boolean | null;
-          externalUrl: string | null;
           fullDescription: {
             __typename?: 'ProjectFullDescription';
             json: any;
@@ -1440,6 +1492,12 @@ export type GetPortfolioWithProjectDetailsQuery = {
             width: number | null;
             height: number | null;
             sys: { __typename?: 'Sys'; id: string };
+          } | null;
+          demoVideo: {
+            __typename?: 'Asset';
+            url: string | null;
+            width: number | null;
+            height: number | null;
           } | null;
         } | null>;
       } | null;

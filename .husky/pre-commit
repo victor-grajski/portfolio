@@ -1,6 +1,9 @@
 echo "Running lint-staged (auto-fixing linting issues)..."
 npx lint-staged
 
+echo "Running TypeScript type check..."
+npm run typecheck
+
 echo "Running build check..."
 npm run build:check
 

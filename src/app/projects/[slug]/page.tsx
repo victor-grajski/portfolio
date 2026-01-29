@@ -101,8 +101,8 @@ async function getProjectData(slug: string) {
   }
 
   const currentIndex = allProjects.findIndex((p) => p.slug === project.slug);
-  const nextProject = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
-  const prevProject = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null;
+  const prevProject = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
+  const nextProject = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null;
 
   return { project, prevProject, nextProject };
 }
@@ -196,8 +196,22 @@ export default async function ProjectPage({ params }: Props) {
         )}
       </div>
 
-      {/* Main Image */}
-      {projectData.mainImage?.url && (
+      {/* Demo Video or Main Image */}
+      {projectData.demoVideo?.url ? (
+        <div className="relative w-full aspect-[16/9] mb-12 bg-[#000] rounded-xl">
+          <video
+            src={projectData.demoVideo.url}
+            controls
+            loop
+            muted
+            autoPlay
+            playsInline
+            className="w-full h-full object-contain rounded-xl"
+          >
+            Your browser doesn&apos;t support video playback.
+          </video>
+        </div>
+      ) : projectData.mainImage?.url ? (
         <div className="relative w-full aspect-[16/9] mb-12">
           <Image
             src={projectData.mainImage.url}
@@ -206,7 +220,7 @@ export default async function ProjectPage({ params }: Props) {
             className="object-cover rounded-xl"
           />
         </div>
-      )}
+      ) : null}
 
       {/* Content Section */}
       <div className="flex flex-col lg:flex-row lg:gap-12">

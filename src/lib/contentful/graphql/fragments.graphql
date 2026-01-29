@@ -20,6 +20,11 @@ fragment ProjectFields on Project {
   mainImage {
     ...AssetFields
   }
+  demoVideo {
+    url
+    width
+    height
+  }
   role
   duration
   year
