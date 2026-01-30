@@ -172,6 +172,48 @@ export async function getProjectBySlug(slug: string, preview = false): Promise<P
   };
 }
 
+// Lightweight query for just the headline (fast loading for hero)
+export async function getHeadline(preview = false): Promise<string | null> {
+  const data = await fetchGraphQL<{ portfolioCollection: { items: Array<{ headline?: string }> } }>(
+    /* GraphQL */
+    `
+      query GetHeadline {
+        portfolioCollection(limit: 1) {
+          items {
+            headline
+          }
+        }
+      }
+    `,
+    undefined,
+    preview
+  );
+
+  return data.portfolioCollection.items[0]?.headline || null;
+}
+
+// Lightweight query for just the GitHub URL (for navigation)
+export async function getGithubUrl(preview = false): Promise<string | null> {
+  const data = await fetchGraphQL<{
+    portfolioCollection: { items: Array<{ githubUrl?: string }> };
+  }>(
+    /* GraphQL */
+    `
+      query GetGithubUrl {
+        portfolioCollection(limit: 1) {
+          items {
+            githubUrl
+          }
+        }
+      }
+    `,
+    undefined,
+    preview
+  );
+
+  return data.portfolioCollection.items[0]?.githubUrl || null;
+}
+
 export async function getPortfolio(preview = false) {
   const data = await fetchGraphQL<GetPortfolioQuery>(
     /* GraphQL */

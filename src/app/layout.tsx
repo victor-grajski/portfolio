@@ -8,7 +8,8 @@ import { Navigation } from '@/components/Navigation';
 import { Providers } from '@/components/Providers';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { DevAuthToggle } from '@/components/DevAuthToggle';
-import { getPortfolio } from '@/lib/contentful/api';
+import { getGithubUrl } from '@/lib/contentful/api';
+import { Suspense } from 'react';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -16,9 +17,12 @@ export const metadata: Metadata = {
   description: 'Portfolio of Victor Grajski, Design Engineer',
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const portfolio = await getPortfolio();
+async function NavigationWrapper() {
+  const githubUrl = await getGithubUrl();
+  return <Navigation githubUrl={githubUrl || undefined} />;
+}
 
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="font-mulish min-h-screen bg-[#f8f8f8] dark:bg-[#0a0a0a] text-black dark:text-white">
@@ -37,7 +41,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 >
                   Victor Grajski
                 </Link>
-                <Navigation githubUrl={portfolio?.githubUrl || undefined} />
+                <Suspense fallback={<div className="w-20" />}>
+                  <NavigationWrapper />
+                </Suspense>
               </div>
             </header>
             <main className="pt-20">{children}</main>

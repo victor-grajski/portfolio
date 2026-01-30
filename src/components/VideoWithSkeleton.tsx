@@ -15,7 +15,7 @@ export default function VideoWithSkeleton({ src, className = '' }: VideoWithSkel
       {/* Skeleton loader */}
       {isLoading && (
         <div
-          className={`absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-800 rounded-xl animate-pulse ${className}`}
+          className={`absolute inset-0 flex items-center justify-center bg-transparent rounded-xl animate-pulse ${className}`}
         >
           <div className="flex flex-col items-center gap-3">
             <div className="w-16 h-16 rounded-full border-4 border-gray-300 dark:border-gray-700 border-t-gray-500 dark:border-t-gray-500 animate-spin" />
