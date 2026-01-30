@@ -30,12 +30,12 @@ function getRichTextOptions(assetMap: Map<string, ContentfulAsset>): Options {
       [MARKS.ITALIC]: (text: React.ReactNode) => <em>{text}</em>,
       [MARKS.UNDERLINE]: (text: React.ReactNode) => <u>{text}</u>,
       [MARKS.CODE]: (text: React.ReactNode) => (
-        <code className="bg-gray-800 px-2 py-1 rounded text-sm">{text}</code>
+        <code className="bg-gray-200 dark:bg-gray-800 px-2 py-1 rounded text-sm">{text}</code>
       ),
     },
     renderNode: {
       [BLOCKS.PARAGRAPH]: (_node, children) => (
-        <p className="mb-4 leading-relaxed text-[#454545]">{children}</p>
+        <p className="mb-4 leading-relaxed text-[#454545] dark:text-[#f5f5f5]">{children}</p>
       ),
       [BLOCKS.HEADING_1]: (_node, children) => (
         <h1 className="text-3xl font-bold mb-4 mt-8">{children}</h1>
@@ -47,10 +47,14 @@ function getRichTextOptions(assetMap: Map<string, ContentfulAsset>): Options {
         <h3 className="text-xl font-bold mb-2 mt-4">{children}</h3>
       ),
       [BLOCKS.UL_LIST]: (_node, children) => (
-        <ul className="list-disc list-inside mb-4 space-y-1">{children}</ul>
+        <ul className="list-disc list-inside mb-4 space-y-1 text-[#454545] dark:text-[#f5f5f5]">
+          {children}
+        </ul>
       ),
       [BLOCKS.OL_LIST]: (_node, children) => (
-        <ol className="list-decimal list-inside mb-4 space-y-1">{children}</ol>
+        <ol className="list-decimal list-inside mb-4 space-y-1 text-[#454545] dark:text-[#f5f5f5]">
+          {children}
+        </ol>
       ),
       [BLOCKS.LIST_ITEM]: (_node, children) => <li className="mb-2">{children}</li>,
       [BLOCKS.EMBEDDED_ASSET]: (node) => {
@@ -69,7 +73,9 @@ function getRichTextOptions(assetMap: Map<string, ContentfulAsset>): Options {
               className="rounded-lg w-full h-auto"
             />
             {asset.description && (
-              <p className="text-sm text-gray-600 mt-2 text-center italic">{asset.description}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 text-center italic">
+                {asset.description}
+              </p>
             )}
           </div>
         );
@@ -77,7 +83,7 @@ function getRichTextOptions(assetMap: Map<string, ContentfulAsset>): Options {
       [INLINES.HYPERLINK]: (node, children) => (
         <a
           href={node.data.uri}
-          className="text-blue-400 hover:text-blue-300 underline"
+          className="text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 underline"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -120,7 +126,7 @@ export default async function AboutPage() {
                 richTextOptions
               )
             ) : (
-              <p className="mb-4">Content coming soon...</p>
+              <p className="mb-4 text-[#454545] dark:text-[#f5f5f5]">Content coming soon...</p>
             )}
           </div>
         </div>

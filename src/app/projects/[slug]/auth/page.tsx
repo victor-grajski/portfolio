@@ -39,20 +39,6 @@ export default async function ProjectAuthPage({ params }: ProjectAuthParams) {
         {project.subtitle && <p className="text-xl md:text-2xl opacity-80">{project.subtitle}</p>}
       </div>
 
-      {/* Commented out blurred image section
-      {project.mainImage?.url && (
-        <div className="relative w-full aspect-[16/9] mb-12">
-          <div className="absolute inset-0 backdrop-blur-md z-10" />
-          <Image
-            src={project.mainImage.url}
-            alt={project.title}
-            fill
-            className="object-cover rounded-xl opacity-50"
-          />
-        </div>
-      )}
-      */}
-
       <div className="max-w-lg">
         <ProjectAuthWithUrlPassword projectSlug={slug} />
       </div>

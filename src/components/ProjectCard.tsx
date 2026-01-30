@@ -25,7 +25,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
   return (
     <div
       onClick={handleClick}
-      className="group bg-black rounded-2xl p-6 md:p-8 hover:scale-[1.02] cursor-pointer relative"
+      className="group bg-black dark:bg-black rounded-2xl p-6 md:p-8 hover:scale-[1.02] cursor-pointer relative border border-transparent dark:border-[#f5f5f5]"
       style={{
         transition: 'all 0.3s cubic-bezier(0.33, 0, 0.2, 1)',
         boxShadow: '0 0 0 rgba(0, 0, 0, 0)',
@@ -39,7 +39,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
     >
       <div className="flex flex-col lg:flex-row lg:gap-8">
         {/* Content - Left on desktop, bottom on mobile */}
-        <div className="order-2 lg:order-1 lg:w-1/2 mt-6 lg:mt-0 text-[#f8f8f8]">
+        <div className="order-2 lg:order-1 lg:w-1/2 mt-6 lg:mt-0 text-[#f8f8f8] dark:text-[#f5f5f5]">
           <h2 className="text-2xl font-bold mb-3">{project.title}</h2>
           {project.shortDescription && (
             <p className="opacity-80 mb-12 md:mb-16 lg:mb-0">{project.shortDescription}</p>
@@ -54,7 +54,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
                 src={project.mainImage.url}
                 alt={project.title || 'Project image'}
                 fill
-                className="object-cover group-hover:scale-105"
+                className="object-contain group-hover:scale-105"
                 style={{ transition: 'transform 0.3s cubic-bezier(0.33, 0, 0.2, 1)' }}
               />
               {/* Commented out darkening overlay

@@ -8,6 +8,7 @@ import { BLOCKS, INLINES, MARKS, Document } from '@contentful/rich-text-types';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
+import VideoWithSkeleton from '@/components/VideoWithSkeleton';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -35,12 +36,12 @@ function getRichTextOptions(assetMap: Map<string, ContentfulAsset>): Options {
       [MARKS.ITALIC]: (text: React.ReactNode) => <em>{text}</em>,
       [MARKS.UNDERLINE]: (text: React.ReactNode) => <u>{text}</u>,
       [MARKS.CODE]: (text: React.ReactNode) => (
-        <code className="bg-gray-800 px-2 py-1 rounded text-sm">{text}</code>
+        <code className="bg-gray-200 dark:bg-gray-800 px-2 py-1 rounded text-sm">{text}</code>
       ),
     },
     renderNode: {
       [BLOCKS.PARAGRAPH]: (_node, children) => (
-        <p className="opacity-80 leading-relaxed mb-4">{children}</p>
+        <p className="opacity-80 dark:opacity-100 leading-relaxed mb-4">{children}</p>
       ),
       [BLOCKS.HEADING_1]: (_node, children) => (
         <h1 className="text-3xl font-bold mb-4 mt-8">{children}</h1>
@@ -52,10 +53,10 @@ function getRichTextOptions(assetMap: Map<string, ContentfulAsset>): Options {
         <h3 className="text-xl font-bold mb-2 mt-4">{children}</h3>
       ),
       [BLOCKS.UL_LIST]: (_node, children) => (
-        <ul className="list-disc list-inside mb-4 opacity-80">{children}</ul>
+        <ul className="list-disc list-inside mb-4 opacity-80 dark:opacity-100">{children}</ul>
       ),
       [BLOCKS.OL_LIST]: (_node, children) => (
-        <ol className="list-decimal list-inside mb-4 opacity-80">{children}</ol>
+        <ol className="list-decimal list-inside mb-4 opacity-80 dark:opacity-100">{children}</ol>
       ),
       [BLOCKS.LIST_ITEM]: (_node, children) => <li className="mb-2">{children}</li>,
       [BLOCKS.EMBEDDED_ASSET]: (node) => {
@@ -74,7 +75,9 @@ function getRichTextOptions(assetMap: Map<string, ContentfulAsset>): Options {
               className="rounded-lg w-full h-auto"
             />
             {asset.description && (
-              <p className="text-sm opacity-60 mt-2 text-center italic">{asset.description}</p>
+              <p className="text-sm opacity-60 dark:opacity-100 dark:text-[#f5f5f5] mt-2 text-center italic">
+                {asset.description}
+              </p>
             )}
           </div>
         );
@@ -82,7 +85,7 @@ function getRichTextOptions(assetMap: Map<string, ContentfulAsset>): Options {
       [INLINES.HYPERLINK]: (node, children) => (
         <a
           href={node.data.uri}
-          className="text-blue-400 hover:text-blue-300 underline"
+          className="text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 underline"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -192,32 +195,28 @@ export default async function ProjectPage({ params }: Props) {
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl font-extrabold mb-3">{projectData.title}</h1>
         {projectData.subtitle && (
-          <p className="text-xl md:text-2xl opacity-50">{projectData.subtitle}</p>
+          <p className="text-xl md:text-2xl opacity-50 dark:opacity-100 dark:text-[#f5f5f5]">
+            {projectData.subtitle}
+          </p>
         )}
       </div>
 
       {/* Demo Video or Main Image */}
       {projectData.demoVideo?.url ? (
-        <div className="relative w-full aspect-[16/9] mb-12 bg-[#000] rounded-xl">
-          <video
+        <div className="w-full mb-12">
+          <VideoWithSkeleton
             src={projectData.demoVideo.url}
-            controls
-            loop
-            muted
-            autoPlay
-            playsInline
-            className="w-full h-full object-contain rounded-xl"
-          >
-            Your browser doesn&apos;t support video playback.
-          </video>
+            className="max-h-[66vh] w-auto max-w-full rounded-xl"
+          />
         </div>
       ) : projectData.mainImage?.url ? (
-        <div className="relative w-full aspect-[16/9] mb-12">
+        <div className="w-full mb-12 flex justify-center">
           <Image
             src={projectData.mainImage.url}
             alt={projectData.title}
-            fill
-            className="object-cover rounded-xl"
+            width={projectData.mainImage.width || 1200}
+            height={projectData.mainImage.height || 800}
+            className="max-h-[66vh] w-auto max-w-full h-auto rounded-xl"
           />
         </div>
       ) : null}
@@ -229,26 +228,38 @@ export default async function ProjectPage({ params }: Props) {
           <div className="space-y-6">
             {projectData.role && (
               <div>
-                <h2 className="text-lg font-semibold mb-1 text-[#454545]">Role</h2>
-                <p className="opacity-80 text-[#454545]">{projectData.role}</p>
+                <h2 className="text-lg font-semibold mb-1 text-[#454545] dark:text-[#fff]">Role</h2>
+                <p className="opacity-80 text-[#454545] dark:opacity-100 dark:text-[#f5f5f5]">
+                  {projectData.role}
+                </p>
               </div>
             )}
             {projectData.duration && (
               <div>
-                <h2 className="text-lg font-semibold mb-1 text-[#454545]">Duration</h2>
-                <p className="opacity-80 text-[#454545]">{projectData.duration}</p>
+                <h2 className="text-lg font-semibold mb-1 text-[#454545] dark:text-[#fff]">
+                  Duration
+                </h2>
+                <p className="opacity-80 text-[#454545] dark:opacity-100 dark:text-[#f5f5f5]">
+                  {projectData.duration}
+                </p>
               </div>
             )}
             {projectData.year && (
               <div>
-                <h2 className="text-lg font-semibold mb-1 text-[#454545]">Year</h2>
-                <p className="opacity-80 text-[#454545]">{projectData.year}</p>
+                <h2 className="text-lg font-semibold mb-1 text-[#454545] dark:text-[#fff]">Year</h2>
+                <p className="opacity-80 text-[#454545] dark:opacity-100 dark:text-[#f5f5f5]">
+                  {projectData.year}
+                </p>
               </div>
             )}
             {projectData.tools && projectData.tools.length > 0 && (
               <div>
-                <h2 className="text-lg font-semibold mb-1 text-[#454545]">Tools</h2>
-                <p className="opacity-80 text-[#454545]">{projectData.tools.join(', ')}</p>
+                <h2 className="text-lg font-semibold mb-1 text-[#454545] dark:text-[#fff]">
+                  Tools
+                </h2>
+                <p className="opacity-80 text-[#454545] dark:opacity-100 dark:text-[#f5f5f5]">
+                  {projectData.tools.join(', ')}
+                </p>
               </div>
             )}
           </div>
@@ -257,7 +268,7 @@ export default async function ProjectPage({ params }: Props) {
         {/* Right Column - Description */}
         <div className="lg:w-2/3">
           {projectData.fullDescription?.json && (
-            <div className="mb-8 prose prose-invert max-w-none text-[#454545]">
+            <div className="mb-8 prose prose-invert max-w-none text-[#454545] dark:text-[#f5f5f5]">
               {documentToReactComponents(
                 projectData.fullDescription.json as unknown as Document,
                 richTextOptions
@@ -268,11 +279,11 @@ export default async function ProjectPage({ params }: Props) {
       </div>
 
       {/* Previous/Next Navigation */}
-      <div className="mt-16 pt-8 border-t flex flex-row justify-between gap-4">
+      <div className="mt-16 pt-8 border-t border-gray-300 dark:border-gray-700 flex flex-row justify-between gap-4">
         {prevProject ? (
           <Link
             href={`/projects/${prevProject.slug}`}
-            className="flex items-center text-lg hover:opacity-70 transition-opacity text-[#454545] max-w-[50%] md:max-w-none flex-shrink"
+            className="flex items-center text-lg hover:opacity-70 transition-opacity text-[#454545] dark:text-[#fff] max-w-[50%] md:max-w-none flex-shrink"
           >
             <span className="mr-2 flex-shrink-0">←</span>
             <span className="break-words">{prevProject.title}</span>
@@ -284,7 +295,7 @@ export default async function ProjectPage({ params }: Props) {
         {nextProject ? (
           <Link
             href={`/projects/${nextProject.slug}`}
-            className="flex items-center justify-end text-lg hover:opacity-70 transition-opacity text-[#454545] max-w-[50%] md:max-w-none text-right flex-shrink"
+            className="flex items-center justify-end text-lg hover:opacity-70 transition-opacity text-[#454545] dark:text-[#fff] max-w-[50%] md:max-w-none text-right flex-shrink"
           >
             <span className="break-words">{nextProject.title}</span>
             <span className="ml-2 flex-shrink-0">→</span>
