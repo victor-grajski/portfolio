@@ -3,6 +3,8 @@
 import { signIn } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { EyeIcon, EyeSlashIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface ProjectAuthWithUrlPasswordProps {
   projectSlug: string;
@@ -14,6 +16,7 @@ export function ProjectAuthWithUrlPassword({ projectSlug }: ProjectAuthWithUrlPa
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [autoAuthAttempted, setAutoAuthAttempted] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const isDevelopment = process.env.NODE_ENV === 'development';
@@ -34,11 +37,13 @@ export function ProjectAuthWithUrlPassword({ projectSlug }: ProjectAuthWithUrlPa
       })
         .then((result) => {
           if (result?.ok) {
-            // Authentication successful - redirect to project page
+            // Show success state
+            setIsSuccess(true);
+            // Wait for animation, then redirect
             setTimeout(() => {
               router.push(`/projects/${projectSlug}`);
               router.refresh();
-            }, 500);
+            }, 1500);
           } else {
             // Auto-auth failed - show error and let user try manually
             setError(
@@ -69,20 +74,21 @@ export function ProjectAuthWithUrlPassword({ projectSlug }: ProjectAuthWithUrlPa
       });
 
       if (result?.ok) {
-        // Add a small delay to ensure the session is properly set
+        // Show success state
+        setIsSuccess(true);
+        setIsLoading(false);
+        // Wait for animation, then redirect
         setTimeout(() => {
-          // Navigate to the project page
           router.push(`/projects/${projectSlug}`);
-          // Force a refresh to ensure the middleware picks up the new session
           router.refresh();
-        }, 500);
+        }, 1500);
       } else {
         setError('Incorrect password');
+        setIsLoading(false);
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setError('An error occurred. Please try again.');
-    } finally {
       setIsLoading(false);
     }
   };
@@ -90,62 +96,120 @@ export function ProjectAuthWithUrlPassword({ projectSlug }: ProjectAuthWithUrlPa
   // Show loading state during auto-authentication
   if (isLoading && !error && searchParams.get('pwd')) {
     return (
-      <div className="space-y-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-white dark:bg-black backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200 dark:border-white p-8"
+      >
         <div className="text-center py-8">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black mb-4"></div>
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-black dark:border-white mb-4"></div>
           <p className="text-lg">Authenticating...</p>
         </div>
-      </div>
+      </motion.div>
+    );
+  }
+
+  // Show success state
+  if (isSuccess) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="bg-white dark:bg-black backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200 dark:border-white p-8"
+      >
+        <div className="text-center py-8">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+          >
+            <CheckCircleIcon className="h-16 w-16 text-green-500 mx-auto mb-4" />
+          </motion.div>
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-lg font-medium"
+          >
+            Access granted! Redirecting...
+          </motion.p>
+        </div>
+      </motion.div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label htmlFor="password" className="block text-sm font-medium mb-2">
-          This project is password protected
-        </label>
-        <div className="relative">
-          <input
-            type={showPassword ? 'text' : 'password'}
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border bg-white/5 border-gray-300 focus:border-black focus:ring-1 focus:ring-black pr-12"
-            placeholder="Enter password"
-            required
-            autoFocus
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 px-2 py-1 text-sm text-gray-600 hover:text-black"
-          >
-            {showPassword ? 'Hide' : 'Show'}
-          </button>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="bg-white dark:bg-black backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200 dark:border-white p-8"
+    >
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium mb-2">
+            This project is password protected
+          </label>
+          <div className="relative">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-3 rounded-lg border bg-white/5 dark:bg-black border-gray-300 dark:border-white focus:border-black dark:focus:border-white focus:ring-2 focus:ring-black/10 dark:focus:ring-white/10 transition-all duration-200 pr-12 outline-none dark:text-white"
+              placeholder="Enter password"
+              required
+              autoFocus
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors rounded-md hover:bg-gray-100 dark:hover:bg-gray-700/50"
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+            >
+              {showPassword ? (
+                <EyeSlashIcon className="h-5 w-5" />
+              ) : (
+                <EyeIcon className="h-5 w-5" />
+              )}
+            </button>
+          </div>
         </div>
-      </div>
 
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+        <AnimatePresence mode="wait">
+          {error && (
+            <motion.p
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="text-red-500 dark:text-red-400 text-sm"
+            >
+              {error}
+            </motion.p>
+          )}
+        </AnimatePresence>
 
-      <button
-        type="submit"
-        disabled={isLoading}
-        className="bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {isLoading ? 'Verifying...' : 'View Project'}
-      </button>
+        <motion.button
+          type="submit"
+          disabled={isLoading}
+          whileHover={{ scale: isLoading ? 1 : 1.02 }}
+          whileTap={{ scale: isLoading ? 1 : 0.98 }}
+          className="w-full bg-black dark:bg-white text-white dark:text-black px-8 py-3 rounded-lg font-medium hover:shadow-lg hover:shadow-black/20 dark:hover:shadow-white/20 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
+        >
+          {isLoading ? 'Verifying...' : 'View Project'}
+        </motion.button>
 
-      {isDevelopment && (
-        <div className="text-sm text-gray-500 mt-4">
-          <p>
-            For development:{' '}
-            {process.env.NEXT_PUBLIC_DEV_SKIP_AUTH === 'true'
-              ? 'Auth is currently bypassed'
-              : 'Auth is enabled'}
-          </p>
-        </div>
-      )}
-    </form>
+        {isDevelopment && (
+          <div className="text-sm text-gray-500 dark:text-gray-400 mt-4 pt-4 border-t border-gray-200 dark:border-white/20">
+            <p>
+              For development:{' '}
+              {process.env.NEXT_PUBLIC_DEV_SKIP_AUTH === 'true'
+                ? 'Auth is currently bypassed'
+                : 'Auth is enabled'}
+            </p>
+          </div>
+        )}
+      </form>
+    </motion.div>
   );
 }
