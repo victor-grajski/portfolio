@@ -20,3 +20,19 @@ body {
 ::selection {
   background: #2198974d;
 }
+
+/* Initial cursor blink animation - runs before React hydrates */
+@keyframes cursor-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.cursor-initial-blink {
+  animation: cursor-blink 1s steps(2) infinite;
+}

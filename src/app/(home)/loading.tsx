@@ -1,14 +1,15 @@
 export default function Loading() {
   return (
-    <div className="max-w-5xl mx-auto px-6">
-      {/* Hero Skeleton */}
+    <div className="max-w-5xl mx-auto px-6 pb-16">
+      {/* Hero - just blinking cursor */}
       <section className="py-16 md:py-24">
         <div className="w-full lg:w-2/3">
-          <div className="space-y-4 my-16 min-h-[12rem]">
-            <div className="h-8 bg-[#454545] rounded animate-pulse w-full"></div>
-            <div className="h-8 bg-[#454545] rounded animate-pulse w-5/6"></div>
-            <div className="h-8 bg-[#454545] rounded animate-pulse w-4/6"></div>
-          </div>
+          <h1
+            className="text-2xl md:text-3xl my-16 min-h-[12rem] font-normal text-[#454545] dark:text-[#f5f5f5]"
+            style={{ lineHeight: '1.5' }}
+          >
+            <span className="inline-block cursor-initial-blink">|</span>
+          </h1>
         </div>
       </section>
 

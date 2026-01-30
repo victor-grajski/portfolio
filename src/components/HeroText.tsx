@@ -7,39 +7,50 @@ interface HeroTextProps {
   children: React.ReactNode;
 }
 
+type CursorState = 'blinking' | 'typing' | 'fading' | 'hidden';
+
 export function HeroText({ children }: HeroTextProps) {
   const [displayedText, setDisplayedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [showCursor, setShowCursor] = useState(true);
+  const [cursorState, setCursorState] = useState<CursorState>('blinking');
   const text = String(children || '');
 
+  // Typing effect
   useEffect(() => {
     if (currentIndex < text.length) {
+      // Start typing - cursor stops blinking
+      if (cursorState === 'blinking') {
+        setCursorState('typing');
+      }
+
       const timeout = setTimeout(() => {
         setDisplayedText((prev) => prev + text[currentIndex]);
         setCurrentIndex((prev) => prev + 1);
-      }, 30); // Speed of typing (lower = faster)
+      }, 30);
 
       return () => clearTimeout(timeout);
+    } else if (currentIndex >= text.length && text.length > 0 && cursorState === 'typing') {
+      // Typing complete - fade out cursor
+      setCursorState('fading');
     }
-  }, [currentIndex, text]);
+  }, [currentIndex, text, cursorState]);
 
-  // Hide cursor after a delay when typing finishes
+  // Hide cursor after fade
   useEffect(() => {
-    if (currentIndex >= text.length && text.length > 0) {
+    if (cursorState === 'fading') {
       const timeout = setTimeout(() => {
-        setShowCursor(false);
-      }, 500); // Delay before hiding cursor (in ms)
+        setCursorState('hidden');
+      }, 500);
 
       return () => clearTimeout(timeout);
     }
-  }, [currentIndex, text.length]);
+  }, [cursorState]);
 
   // Reset animation when text changes
   useEffect(() => {
     setDisplayedText('');
     setCurrentIndex(0);
-    setShowCursor(true);
+    setCursorState('blinking');
   }, [text]);
 
   return (
@@ -48,11 +59,24 @@ export function HeroText({ children }: HeroTextProps) {
       style={{ lineHeight: '1.5' }}
     >
       {displayedText}
-      {showCursor && (
+      {cursorState !== 'hidden' && (
         <motion.span
-          animate={{ opacity: [1, 0] }}
-          transition={{ duration: 0.8, repeat: Infinity, repeatType: 'reverse' }}
-          className="inline-block"
+          initial={{ opacity: 1 }}
+          animate={
+            cursorState === 'blinking'
+              ? { opacity: [1, 1, 0, 0] }
+              : cursorState === 'typing'
+                ? { opacity: 1 }
+                : { opacity: 0 }
+          }
+          transition={
+            cursorState === 'blinking'
+              ? { duration: 1, repeat: Infinity, times: [0, 0.5, 0.5, 1] }
+              : cursorState === 'fading'
+                ? { duration: 0.5 }
+                : { duration: 0 }
+          }
+          className={`inline-block ${cursorState === 'blinking' ? 'cursor-initial-blink' : ''}`}
         >
           |
         </motion.span>
