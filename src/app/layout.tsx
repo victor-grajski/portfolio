@@ -22,7 +22,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="font-mulish min-h-screen bg-[#f8f8f8] dark:bg-[#0a0a0a] text-black dark:text-white">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <Providers>
             <header className="fixed top-0 left-0 right-0 bg-[#f8f8f8] dark:bg-[#0a0a0a] z-50">
               <div className="max-w-5xl mx-auto px-6 pt-4 lg:pt-8 pb-4 flex items-center justify-between">
