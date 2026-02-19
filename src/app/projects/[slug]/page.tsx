@@ -9,7 +9,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import VideoWithSkeleton from '@/components/VideoWithSkeleton';
-import YouTubeEmbed from '@/components/YouTubeEmbed';
+import YouTubeEmbed, { extractYouTubeId } from '@/components/YouTubeEmbed';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -210,7 +210,7 @@ export default async function ProjectPage({ params }: Props) {
             className="max-h-[66vh] w-auto max-w-full rounded-xl"
           />
         </div>
-      ) : projectData.videoUrl ? (
+      ) : projectData.videoUrl && extractYouTubeId(projectData.videoUrl) ? (
         <div className="w-full mb-12 flex justify-center">
           <YouTubeEmbed
             url={projectData.videoUrl}
