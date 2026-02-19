@@ -9,7 +9,8 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import VideoWithSkeleton from '@/components/VideoWithSkeleton';
-import YouTubeEmbed, { extractYouTubeId } from '@/components/YouTubeEmbed';
+import YouTubeEmbed from '@/components/YouTubeEmbed';
+import { extractYouTubeId } from '@/lib/youtube';
 
 interface Props {
   params: Promise<{ slug: string }>;
