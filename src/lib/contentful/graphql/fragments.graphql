@@ -25,6 +25,7 @@ fragment ProjectFields on Project {
     width
     height
   }
+  videoUrl
   role
   duration
   year

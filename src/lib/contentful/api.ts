@@ -44,6 +44,7 @@ interface ProjectCollectionResponse {
         width?: number;
         height?: number;
       };
+      videoUrl?: string;
       role?: string;
       duration?: string;
       year?: string;
@@ -99,6 +100,7 @@ export async function getProjects(preview = false): Promise<ProjectData[]> {
             height: item.demoVideo.height ?? undefined,
           }
         : undefined,
+      videoUrl: item.videoUrl ?? undefined,
       role: item.role ?? undefined,
       duration: item.duration ?? undefined,
       year: item.year ?? undefined,
@@ -147,6 +149,7 @@ export async function getProjectBySlug(slug: string, preview = false): Promise<P
               width
               height
             }
+            videoUrl
             role
             duration
             year
@@ -268,6 +271,7 @@ export async function getPortfolio(preview = false) {
                   width
                   height
                 }
+                videoUrl
                 role
                 duration
                 year

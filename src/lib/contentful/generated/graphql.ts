@@ -606,6 +606,7 @@ export type Project = Entry &
     sys: Sys;
     title: Maybe<Scalars['String']['output']>;
     tools: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+    videoUrl: Maybe<Scalars['String']['output']>;
     year: Maybe<Scalars['String']['output']>;
   };
 
@@ -684,6 +685,12 @@ export type ProjectTitleArgs = {
 
 /** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
 export type ProjectToolsArgs = {
+  locale: InputMaybe<Scalars['String']['input']>;
+  useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** [See type definition](https://app.contentful.com/spaces/iisowww2sx04/content_types/project) */
+export type ProjectVideoUrlArgs = {
   locale: InputMaybe<Scalars['String']['input']>;
   useFallbackLocale: InputMaybe<Scalars['Boolean']['input']>;
 };
@@ -1153,6 +1160,7 @@ export type ProjectFieldsFragment = {
   year: string | null;
   tools: Array<string | null> | null;
   isPasswordProtected: boolean | null;
+  videoUrl: string | null;
   sys: { __typename?: 'Sys'; id: string };
   mainImage: {
     __typename?: 'Asset';
@@ -1229,6 +1237,7 @@ export type PortfolioFieldsFragment = {
       year: string | null;
       tools: Array<string | null> | null;
       isPasswordProtected: boolean | null;
+      videoUrl: string | null;
       sys: { __typename?: 'Sys'; id: string };
       mainImage: {
         __typename?: 'Asset';
@@ -1293,6 +1302,7 @@ export type GetPortfolioQuery = {
           year: string | null;
           tools: Array<string | null> | null;
           isPasswordProtected: boolean | null;
+          videoUrl: string | null;
           sys: { __typename?: 'Sys'; id: string };
           mainImage: {
             __typename?: 'Asset';
@@ -1332,6 +1342,7 @@ export type GetAllProjectsQuery = {
       year: string | null;
       tools: Array<string | null> | null;
       isPasswordProtected: boolean | null;
+      videoUrl: string | null;
       sys: { __typename?: 'Sys'; id: string };
       mainImage: {
         __typename?: 'Asset';
@@ -1371,6 +1382,7 @@ export type GetProjectBySlugQuery = {
       year: string | null;
       tools: Array<string | null> | null;
       isPasswordProtected: boolean | null;
+      videoUrl: string | null;
       fullDescription: {
         __typename?: 'ProjectFullDescription';
         json: any;
@@ -1464,6 +1476,7 @@ export type GetPortfolioWithProjectDetailsQuery = {
           year: string | null;
           tools: Array<string | null> | null;
           isPasswordProtected: boolean | null;
+          videoUrl: string | null;
           fullDescription: {
             __typename?: 'ProjectFullDescription';
             json: any;
