@@ -2,7 +2,6 @@
 
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { EyeIcon, EyeSlashIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -16,7 +15,6 @@ export function ProjectAuthForm({ projectSlug }: ProjectAuthFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const router = useRouter();
   const isDevelopment = process.env.NODE_ENV === 'development';
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -37,8 +35,7 @@ export function ProjectAuthForm({ projectSlug }: ProjectAuthFormProps) {
         setIsLoading(false);
         // Wait for animation, then redirect
         setTimeout(() => {
-          router.push(`/projects/${projectSlug}`);
-          router.refresh();
+          window.location.href = `/projects/${projectSlug}`;
         }, 1500);
       } else {
         setError('Incorrect password');

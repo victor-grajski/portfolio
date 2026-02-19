@@ -2,7 +2,7 @@
 
 import { signIn } from 'next-auth/react';
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { EyeIcon, EyeSlashIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -17,7 +17,6 @@ export function ProjectAuthWithUrlPassword({ projectSlug }: ProjectAuthWithUrlPa
   const [showPassword, setShowPassword] = useState(false);
   const [autoAuthAttempted, setAutoAuthAttempted] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const router = useRouter();
   const searchParams = useSearchParams();
   const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -41,8 +40,7 @@ export function ProjectAuthWithUrlPassword({ projectSlug }: ProjectAuthWithUrlPa
             setIsSuccess(true);
             // Wait for animation, then redirect
             setTimeout(() => {
-              router.push(`/projects/${projectSlug}`);
-              router.refresh();
+              window.location.href = `/projects/${projectSlug}`;
             }, 1500);
           } else {
             // Auto-auth failed - show error and let user try manually
@@ -59,7 +57,7 @@ export function ProjectAuthWithUrlPassword({ projectSlug }: ProjectAuthWithUrlPa
           setIsLoading(false);
         });
     }
-  }, [searchParams, projectSlug, router, autoAuthAttempted]);
+  }, [searchParams, projectSlug, autoAuthAttempted]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,8 +77,7 @@ export function ProjectAuthWithUrlPassword({ projectSlug }: ProjectAuthWithUrlPa
         setIsLoading(false);
         // Wait for animation, then redirect
         setTimeout(() => {
-          router.push(`/projects/${projectSlug}`);
-          router.refresh();
+          window.location.href = `/projects/${projectSlug}`;
         }, 1500);
       } else {
         setError('Incorrect password');
