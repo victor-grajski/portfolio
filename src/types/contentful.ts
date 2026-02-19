@@ -39,6 +39,7 @@ export type ProjectData = {
     width?: number;
     height?: number;
   };
+  videoUrl?: string;
   role?: string;
   duration?: string;
   year?: string;
