@@ -20,7 +20,7 @@ export default function YouTubeEmbed({ url, className = '' }: YouTubeEmbedProps)
   if (!videoId) return null;
 
   return (
-    <div className={`relative w-full ${className}`}>
+    <div className="relative w-full flex justify-center">
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-transparent rounded-xl animate-pulse">
           <div className="flex flex-col items-center gap-3">
@@ -33,7 +33,7 @@ export default function YouTubeEmbed({ url, className = '' }: YouTubeEmbedProps)
       {isMounted && (
         <iframe
           src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`}
-          className={`w-full h-full rounded-xl ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
+          className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
           onLoad={() => setIsLoading(false)}
