@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { extractYouTubeId } from '@/lib/youtube';
 
 interface YouTubeEmbedProps {
@@ -10,7 +10,12 @@ interface YouTubeEmbedProps {
 
 export default function YouTubeEmbed({ url, className = '' }: YouTubeEmbedProps) {
   const [isLoading, setIsLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
   const videoId = extractYouTubeId(url);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   if (!videoId) return null;
 
@@ -25,14 +30,15 @@ export default function YouTubeEmbed({ url, className = '' }: YouTubeEmbedProps)
         </div>
       )}
 
-      <iframe
-        src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`}
-        className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-        loading="lazy"
-        onLoad={() => setIsLoading(false)}
-      />
+      {isMounted && (
+        <iframe
+          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`}
+          className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          onLoad={() => setIsLoading(false)}
+        />
+      )}
     </div>
   );
 }
